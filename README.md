@@ -1,7 +1,10 @@
 Projects
 ========
 
-Various small projects
+Various small projects. These are not polished but might prove
+useful to others. 
+
+Use at your own risk.
 
 gnucash
 -------
@@ -17,4 +20,5 @@ raspberryPI
 ------------
 
 Various raspberry PI projects.
+
 
