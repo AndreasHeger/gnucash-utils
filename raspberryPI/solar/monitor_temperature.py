@@ -121,17 +121,25 @@ class App():
                         temperature = CACHE.get(key, 0)
                     temperature = float(temperature)
                 else:
-                    tfile = open("/sys/bus/w1/devices/w1_bus_master1/%s/w1_slave" % fn )
-                    text = tfile.readlines()
-                    tfile.close()
-                    status, temperature_data = text
-                    if not status.endswith("YES\n"):
+                    try:
+                        tfile = open("/sys/bus/w1/devices/w1_bus_master1/%s/w1_slave" % fn )
+                    except IOError:
+                        tfile = None
+                    if tfile:
+                        text = tfile.readlines()
+                        tfile.close()
+                        status, temperature_data = text
+                        if not status.endswith("YES\n"):
+                            logger.debug("%s from cache" % key)
+                            temperature = CACHE.get(key, 0)
+                        else:
+                            temperature_data = temperature_data.split()[-1]
+                            temperature = float(temperature_data[2:])
+                            temperature = temperature / 1000
+                    else:
                         logger.debug("%s from cache" % key)
                         temperature = CACHE.get(key, 0)
-                    else:
-                        temperature_data = temperature_data.split()[-1]
-                        temperature = float(temperature_data[2:])
-                        temperature = temperature / 1000
+
                 CACHE[key] = temperature
 
                 values.append( temperature )
