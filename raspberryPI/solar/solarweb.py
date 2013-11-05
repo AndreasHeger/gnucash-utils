@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 import os, time
+import rrdtool
 
 DIR='/mnt/ramdisk/'
 OUTDIR='/mnt/ramdisk/'
- 
-import rrdtool
+
+WIDTH=400
+HEIGHT=200
 
 rrd = os.path.join( DIR, "solar_power.rrd" )
 rrd_energy = os.path.join( DIR, "solar_energy.rrd" )
@@ -13,8 +15,8 @@ rrd_energy = os.path.join( DIR, "solar_energy.rrd" )
 rrdtool.graph( 
     os.path.join( OUTDIR,"power_daily.png"),
     "--start", "-1d",
-    "--width", "700",
-    "--height", "200",
+    "--width", str(WIDTH),
+    "--height", str(HEIGHT),
     "DEF:power_1=%(rrd)s:power_1:AVERAGE" % locals(),
     "DEF:power_2=%(rrd)s:power_2:AVERAGE" % locals(),
     "DEF:power_total=%(rrd)s:power_total:AVERAGE" % locals(),
@@ -27,8 +29,8 @@ rrdtool.graph(
 rrdtool.graph( 
     os.path.join( OUTDIR,"power_weekly.png"),
     "--start", "-7d",
-    "--width", "700",
-    "--height", "200",
+    "--width", str(WIDTH),
+    "--height", str(HEIGHT),
     "DEF:power_1=%(rrd)s:power_1:AVERAGE" % locals(),
     "DEF:power_2=%(rrd)s:power_2:AVERAGE" % locals(),
     "DEF:power_total=%(rrd)s:power_total:AVERAGE" % locals(),
@@ -41,8 +43,8 @@ rrdtool.graph(
 rrdtool.graph( 
     os.path.join( OUTDIR,"voltage_daily.png"),
     "--start", "-1d",
-    "--width", "700",
-    "--height", "200",
+    "--width", str(WIDTH),
+    "--height", str(HEIGHT),
     "DEF:voltage_1=%(rrd)s:voltage_1:AVERAGE" % locals(),
     "DEF:voltage_2=%(rrd)s:voltage_2:AVERAGE" % locals(),
     "LINE1:voltage_1#0000FF:'voltage 1'",
@@ -53,8 +55,8 @@ rrdtool.graph(
 rrdtool.graph( 
     os.path.join( OUTDIR,"voltage_weekly.png"),
     "--start", "-7d",
-    "--width", "700",
-    "--height", "200",
+    "--width", str(WIDTH),
+    "--height", str(HEIGHT),
     "DEF:voltage_1=%(rrd)s:voltage_1:AVERAGE" % locals(),
     "DEF:voltage_2=%(rrd)s:voltage_2:AVERAGE" % locals(),
     "LINE1:voltage_1#0000FF:'voltage 1'",
@@ -65,8 +67,8 @@ rrdtool.graph(
 rrdtool.graph( 
     os.path.join( OUTDIR,"energy.png"),
     "--start", "-90d",
-    "--width", "700",
-    "--height", "200",
+    "--width", str(WIDTH),
+    "--height", str(HEIGHT),
     "DEF:energy_daily=%(rrd_energy)s:energy_daily:MAX" % locals(),
     "LINE1:energy_daily#FF0000:'energy / kWh'",
     )

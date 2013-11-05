@@ -3,6 +3,8 @@
 import os, time, socket
 
 HOSTNAME = socket.gethostname()
+WIDTH=400
+HEIGHT=200
 
 DIR="/mnt/ramdisk/"
 OUTDIR='/mnt/ramdisk/'
@@ -29,9 +31,9 @@ COLLECTIONS = {
 
 definition = 'DEF:%(key)s=%(DIR)s/temperature.rrd:%(key)s:AVERAGE'
 line = 'LINE1:%(key)s%(color)s:"%(description)s [deg C]"' 
-statements = { 'hourly': 'rrdtool graph %(OUTDIR)s/temperature_%(period)s.png --width 700 --height 200 --start -4h',
-               'daily': 'rrdtool graph %(OUTDIR)s/temperature_%(period)s.png  --width 700 --height 200 --start -1d',
-               'weekly': 'rrdtool graph %(OUTDIR)s/temperature_%(period)s.png --width 700 --height 200 --start -7d', }
+statements = { 'hourly': 'rrdtool graph %(OUTDIR)s/temperature_%(period)s.png --width %(WIDTH)i --height %(HEIGHT)i --start -4h',
+               'daily': 'rrdtool graph %(OUTDIR)s/temperature_%(period)s.png  --width %(WIDTH)i --height %(HEIGHT)i --start -1d',
+               'weekly': 'rrdtool graph %(OUTDIR)s/temperature_%(period)s.png --width %(WIDTH)i --height %(HEIGHT)i --start -7d', }
                
 for period, statement_prefix in statements.items(): 
     section = HOSTNAME
