@@ -97,7 +97,7 @@ class App():
         self.sensor_group = 1
 
     def run(self):
-        '''main loop. 
+        '''main loop.
         '''
 
         self.createDatabase()
@@ -155,11 +155,12 @@ class App():
                 logger.debug("values collected: %s" % str(values))
 
                 self.updateDatabase(values)
-
+                logger.info("status: weather=ok")
                 logger.debug("database updated")
 
             except Exception, msg:
                 logger.warn("error ignored: msg=%s" % str(msg))
+                logger.info("status: weather=fail")
 
             time.sleep(HEART_BEAT)
 

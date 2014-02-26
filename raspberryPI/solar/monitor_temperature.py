@@ -116,6 +116,7 @@ class App():
             for key in SENSOR_GROUPS[self.sensor_group]:
                 logger.debug("acquiring %s" % key)
                 fn = CONFIG[key]
+                status = {}
                 if fn[0] == "o":
                     try:
                         temperature = subprocess.check_output(
@@ -141,17 +142,20 @@ class App():
                             temperature_data = temperature_data.split()[-1]
                             temperature = float(temperature_data[2:])
                             temperature = temperature / 1000
+                        status[key] = 'ok'
                     else:
                         logger.debug("%s from cache" % key)
+                        status[key] = 'fail'
                         temperature = CACHE.get(key, 0)
 
                 CACHE[key] = temperature
 
                 values.append(temperature)
 
-            logger.debug("required values: %s" % str(values))
+            logger.debug("acquired values: %s" % str(values))
             self.updateDatabase(values)
-
+            logger.info("status: %s" %
+                        (['%s=%s' % (x, y) for x, y in status.items]))
             time.sleep(HEART_BEAT)
 
     def updateDatabase(self, values):

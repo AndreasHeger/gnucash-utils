@@ -2,11 +2,8 @@
 
 # http://www.gavinj.net/2012/06/building-python-daemon-process.html
 
-import sys
 import os
 import time
-import lockfile
-import signal
 import logging
 import rrdtool
 
@@ -257,7 +254,7 @@ class App():
         return tcp, conn
 
     def run(self):
-        '''main loop. 
+        '''main loop.
         '''
 
         self.createDatabase()
@@ -279,9 +276,11 @@ class App():
                 if len(data) == 63:
                     values = fromMsg(data)
                     logger.debug("%s" % str(values))
+                    logger.info("status: solar=ok")
                 else:
                     logger.debug("received %i bytes" % len(data))
                     values = None
+                    logger.info("status: solar=fail")
 
                 if values:
                     self.updateDatabase(values)
