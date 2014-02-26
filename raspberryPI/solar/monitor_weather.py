@@ -169,9 +169,9 @@ class App():
             ":".join(map(str, ([values[x] for x in sorted(DATABASE.keys())])))
         logger.debug(s)
 
-        retval = rrdtool.update(self.rrd_database, s)
+        rrdtool.update(self.rrd_database, s)
 
-        logger.debug('database updated: retval=%i' % retval)
+        logger.debug('database updated')
 
     def createDatabase(self):
         '''create rrd databases. Existing databases will not be overwritten'''

@@ -67,7 +67,7 @@ rrdtool.graph(
 # power generated over the last 3 month
 rrdtool.graph(
     os.path.join(OUTDIR, "energy.png"),
-    "--start", "-90d",
+    "--start", "-180d",
     "--width", str(WIDTH),
     "--height", str(HEIGHT),
     "DEF:energy_daily=%(rrd_energy)s:energy_daily:MAX" % locals(),
