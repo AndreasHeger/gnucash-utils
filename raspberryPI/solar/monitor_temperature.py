@@ -155,7 +155,7 @@ class App():
             logger.debug("acquired values: %s" % str(values))
             self.updateDatabase(values)
             logger.info("status: %s" %
-                        (['%s=%s' % (x, y) for x, y in status.items]))
+                        (['%s=%s' % (x, y) for x, y in status.items()]))
             time.sleep(HEART_BEAT)
 
     def updateDatabase(self, values):
