@@ -98,7 +98,7 @@ else:
         elif value == "fail":
             status_string.append(
                 '<img border="0" src="../images/fail.png">')
-    status_string = " ".join(status)
+    status_string = " ".join(status_string)
 
 definition = 'DEF:%(key)s=%(DIR)s/temperature.rrd:%(key)s:AVERAGE'
 line = 'LINE1:%(key)s%(color)s:"%(description)s [deg C]"'
