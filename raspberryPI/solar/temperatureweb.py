@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 
+import re
 import os
 import time
 import socket
+import datetime
 
 HOSTNAME = socket.gethostname()
 WIDTH = 400
@@ -10,6 +12,47 @@ HEIGHT = 200
 
 DIR = "/mnt/ramdisk/"
 OUTDIR = '/mnt/ramdisk/'
+LOG = "/mnt/ramdisk/temperature.log"
+LOG = "/home/andreas/temperature.log"
+
+
+def getLastLine(filename, pattern, read_size=1024, max_lines=100):
+    """return last lines of a file matching pattern.
+
+    Only check up to *max_lines* lines.
+
+    Returns an empty string if file is empty or no line
+    matches the pattern.
+    """
+
+    # U is to open it with Universal newline support
+    f = open(filename, 'rU')
+    offset = read_size
+    f.seek(0, 2)
+    file_size = f.tell()
+    if file_size == 0:
+        return ""
+    nlines = 0
+    while 1:
+        if file_size < offset:
+            offset = file_size
+        f.seek(-1 * offset, 2)
+        read_str = f.read(offset)
+        # Remove newline at the end
+        if read_str[offset - 1] == '\n':
+            read_str = read_str[:-1]
+        lines = read_str.split('\n')
+        nlines += len(lines)
+        matching = [x for x in lines if pattern.search(x)]
+        if len(matching) > 1:
+            return matching[-1]
+        if nlines > max_lines:
+            return ""
+        if offset == file_size:   # reached the beginning
+            return read_str
+        offset += read_size
+    f.close()
+
 
 # define the desired colors for the graphs
 COLLECTIONS = {
@@ -30,6 +73,33 @@ COLLECTIONS = {
      'LandingBottom': ('#008800', 55, 'LandingBottom'),
      },
 }
+
+
+lastline = getLastLine(LOG, re.compile("INFO - status"))
+
+d_date, d_time, status = re.match(
+    "(\S+) (\S+) - DaemonLog - INFO - status: (\S+)",
+    lastline).groups()
+
+current_time=datetime.datetime.now()
+log_time=datetime.datetime.strptime(
+    "%s %s" % (d_date, d_time),
+    "%Y-%m-%d %H:%M:%S,%f")
+
+delta = current_time - log_time
+if delta.total_seconds():
+    status_string = '<img border="0" src="../images/not_available.png>'
+else:
+    status_string = []
+    for section in status.split(","):
+        key, value = section.split("=")
+        if value == "ok":
+            status_string.append(
+                '<img border="0" src="../images/pass.png>')
+        elif value == "fail":
+            status_string.append(
+                '<img border="0" src="../images/fail.png>')
+    status_string = " ".join(status)
 
 definition = 'DEF:%(key)s=%(DIR)s/temperature.rrd:%(key)s:AVERAGE'
 line = 'LINE1:%(key)s%(color)s:"%(description)s [deg C]"'
@@ -62,9 +132,8 @@ for period, statement_prefix in statements.items():
     os.system(statement)
 
 
-import cgi
-
 datestring = time.asctime(time.localtime(time.time()))
+
 
 print "Content-Type: text/html"
 print
@@ -73,6 +142,7 @@ print '''\
 <body>
 <h1>8A Harley Road Dashboard - %(HOSTNAME)s</h1>
 %(datestring)s
+<p>%(status_string)s</p>
 <form><button>Refresh</button></form>
 <table>
 <tr><th>Hourly</th></tr>
