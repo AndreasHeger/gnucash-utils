@@ -87,18 +87,18 @@ log_time=datetime.datetime.strptime(
     "%Y-%m-%d %H:%M:%S,%f")
 
 delta = current_time - log_time
-if delta.total_seconds():
-    status_string = '<img border="0" src="../images/not_available.png>'
+if delta.total_seconds() > 120:
+    status_string = '<img border="0" src="../images/not_available.png">'
 else:
     status_string = []
     for section in status.split(","):
         key, value = section.split("=")
         if value == "ok":
             status_string.append(
-                '<img border="0" src="../images/pass.png>')
+                '<img border="0" src="../images/pass.png">')
         elif value == "fail":
             status_string.append(
-                '<img border="0" src="../images/fail.png>')
+                '<img border="0" src="../images/fail.png">')
     status_string = " ".join(status)
 
 definition = 'DEF:%(key)s=%(DIR)s/temperature.rrd:%(key)s:AVERAGE'
