@@ -13,7 +13,6 @@ HEIGHT = 200
 DIR = "/mnt/ramdisk/"
 OUTDIR = '/mnt/ramdisk/'
 LOG = "/mnt/ramdisk/temperature.log"
-LOG = "/home/andreas/temperature.log"
 
 
 def getLastLine(filename, pattern, read_size=1024, max_lines=100):
