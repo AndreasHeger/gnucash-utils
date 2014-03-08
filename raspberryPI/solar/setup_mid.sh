@@ -17,7 +17,7 @@ chmod u+x /etc/init.d/monitor_temperature
 update-rc.d monitor_temperature defaults 80
 
 cp images/*.png /mnt/ramdisk
-cp temperatureweb.py /usr/lib/cgi-bin/
-chown -R www-data:www-data /usr/lib/cgi-bin/temperatureweb.py /usr/lib/cgi-bin/solarweb.py /mnt/ramdisk
+cp *web.py Utils.py /usr/lib/cgi-bin/
+chown -R www-data:www-data /usr/lib/cgi-bin/*.py /mnt/ramdisk
 
 # sudo rename 's/S01/S90/' /etc/rc*.d/S*monito*

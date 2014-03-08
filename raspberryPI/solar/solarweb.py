@@ -3,8 +3,11 @@ import os
 import time
 import rrdtool
 
+import Utils
+
 DIR = '/mnt/ramdisk/'
 OUTDIR = '/mnt/ramdisk/'
+LOG = '/mnt/ramdisk/solar.log'
 
 WIDTH = 400
 HEIGHT = 200
@@ -74,7 +77,8 @@ rrdtool.graph(
     "LINE1:energy_daily#FF0000:'energy / kWh'",
 )
 
-import cgi
+status = Utils.getStatusFromLog(LOG)
+status_string = Utils.statusToHTML(status)
 
 datestring = time.asctime(time.localtime(time.time()))
 
@@ -85,6 +89,7 @@ print '''\
 <body>
 <h1>8A Harley Road Solar</h1>
 %(datestring)s
+<p>%(status_string)s</p>
 <form><button>Refresh</button></form>
 <table>
 <tr><th>Daily</th></tr>
