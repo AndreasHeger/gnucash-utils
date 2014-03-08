@@ -261,7 +261,7 @@ class App():
 
         while True:
 
-            logger.info("trying to connect to inverter")
+            logger.info("connecting to inverter")
             tcp, conn = self.setup_connection()
             self.connection = conn
 
@@ -275,7 +275,7 @@ class App():
 
                 if len(data) == 63:
                     values = fromMsg(data)
-                    logger.debug("%s" % str(values))
+                    logger.info("%s" % str(values))
                     logger.info("status: solar=ok")
                 else:
                     logger.debug("received %i bytes" % len(data))
@@ -401,7 +401,7 @@ class App():
 
 app = App()
 logger = logging.getLogger("DaemonLog")
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 formatter = logging.Formatter(
     "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 handler = logging.FileHandler("/mnt/ramdisk/solar.log")

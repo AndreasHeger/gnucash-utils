@@ -152,7 +152,7 @@ class App():
                 values['sunrise'] = sunrise
                 values['sunset'] = sunset
 
-                logger.debug("values collected: %s" % str(values))
+                logger.info("values collected: %s" % str(values))
 
                 self.updateDatabase(values)
                 logger.info("status: weather=ok")
@@ -210,7 +210,7 @@ class App():
 
 app = App()
 logger = logging.getLogger("DaemonLog")
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 formatter = logging.Formatter(
     "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 handler = logging.FileHandler("/mnt/ramdisk/weather.log")
