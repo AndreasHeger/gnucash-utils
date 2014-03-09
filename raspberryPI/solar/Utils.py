@@ -60,7 +60,7 @@ def getStatusFromLog(logfile, max_delta=120):
 
     delta = current_time - log_time
     if delta.total_seconds() > max_delta:
-        return [os.path.basename(logfile), 'na']
+        return [(os.path.basename(logfile), 'na')]
     else:
         results = []
         for section in status.split(","):
