@@ -1,6 +1,7 @@
 import re
 import datetime
 import os
+import json
 
 
 def getLastLine(filename, pattern, read_size=1024, max_lines=100):
@@ -87,4 +88,44 @@ def statusToHTML(status):
     status_string = " ".join(status_string)
     return status_string
 
+rx_temp = re.compile('tempActual.*pwsid="([^"]+)".*value="([^"]+)"')
+rx_winddirection = re.compile('windCompass.*pwsid="([^"]+)".*value="([^"]+)"')
+rx_windspeed = re.compile(
+    'windCompassSpeed.*pwsid="([^"]+)".*>([0-9.]+)</span>')
+rx_sunrise = re.compile('"sRise".*>([0-9.:]+)</span> AM</div>')
+rx_sunset = re.compile('"sSet".*>([0-9.:]+)</span> PM</div>')
+
+
+def time2float(timeval):
+    '''converts a x:xx value to hrs.'''
+    hours, minutes = timeval.split(":")
+    return float(hours) + float(minutes) / 60.0
+
+
+def parseWeather(infile):
+    '''parse weather information from download of
+    wunderground URL
+    '''
+
+    station, temperature = None, None
+    wind_direction, wind_speed = None, None
+
+    keep = False
+    take = []
+    for x in infile:
+        if x.startswith("{"):
+            keep = True
+        elif x.startswith(";"):
+            break
+        if keep:
+            take.append(x)
+
+    txt = "".join(take)
     
+    decoded = json.loads(txt)
+    
+    return dict(
+        ("temperature", decoded["temperature"]),
+        ("wind_direction", decoded["wind_dir_degrees"]),
+        ("wind_speed", decoded["wind_speed"]))
+

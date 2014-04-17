@@ -7,7 +7,6 @@ import time
 import logging
 import rrdtool
 import urllib
-import re
 
 # third party libs
 from daemon import runner
@@ -16,7 +15,8 @@ from daemon import runner
 ##########################################################################
 ##########################################################################
 ##########################################################################
-URL = "http://www.wunderground.com/cgi-bin/findweather/getForecast?query=51.746%2C-1.296&sp=IOXFORDS54"
+FULL_URL = "http://www.wunderground.com/cgi-bin/findweather/getForecast?query=51.746%2C-1.296&sp=IOXFORDS54"
+URL = "http://www.wunderground.com/personal-weather-station/dashboard?ID=IOXFORDS46#"
 
 LAST_COLLECTION = 0
 
@@ -27,24 +27,6 @@ DATABASE = {'wind_direction': (-360, 360),
             'wind_speed': (0, 100),
             'temperature': (-50, 100)}
 
-CACHE = {'wind_direction': 0,
-         'wind_speed': 0,
-         'temperature': 0,
-         'sunrise': 0,
-         'sunset': 0}
-
-rx_temp = re.compile('tempActual.*pwsid="([^"]+)".*value="([^"]+)"')
-rx_winddirection = re.compile('windCompass.*pwsid="([^"]+)".*value="([^"]+)"')
-rx_windspeed = re.compile(
-    'windCompassSpeed.*pwsid="([^"]+)".*>([0-9.]+)</span>')
-rx_sunrise = re.compile('"sRise".*>([0-9.:]+)</span> AM</div>')
-rx_sunset = re.compile('"sSet".*>([0-9.:]+)</span> PM</div>')
-
-
-def time2float(timeval):
-    '''converts a x:xx value to hrs.'''
-    hours, minutes = timeval.split(":")
-    return float(hours) + float(minutes) / 60.0
 
 MIN_TEMPERATURE = -50
 MAX_TEMPERATURE = 100
@@ -111,47 +93,8 @@ class App():
                 logger.debug('open URL')
                 infile = urllib.urlopen(URL)
                 logger.debug('opened URL')
-                station, temperature = None, None
-                wind_direction, wind_speed = None, None
 
-                for line in infile:
-
-                    x = rx_temp.search(line)
-                    if x:
-                        station, temperature = x.groups()
-                        temperature = (float(temperature) - 32) * 5.0 / 9.0
-                        continue
-
-                    x = rx_winddirection.search(line)
-                    if x:
-                        station, wind_direction = x.groups()
-                        wind_direction = float(wind_direction)
-                        continue
-
-                    x = rx_windspeed.search(line)
-                    if x:
-                        station, wind_speed = x.groups()
-                        wind_speed = float(wind_speed)
-                        continue
-
-                    x = rx_sunrise.search(line)
-                    if x:
-                        sunrise = time2float(x.groups()[0])
-                        continue
-
-                    x = rx_sunset.search(line)
-                    if x:
-                        sunset = time2float(x.groups()[0]) + 12.0
-                        continue
-
-                logger.debug('parsed data')
-
-                values['temperature'] = temperature
-                values['wind_direction'] = wind_direction
-                values['wind_speed'] = wind_speed
-                values['sunrise'] = sunrise
-                values['sunset'] = sunset
-
+                values = Utils.parseWeather(infile)
                 logger.info("values collected: %s" % str(values))
 
                 self.updateDatabase(values)
@@ -167,7 +110,8 @@ class App():
     def updateDatabase(self, values):
         '''update rrd database with values'''
         s = "N:" + \
-            ":".join(map(str, ([values[x] for x in sorted(DATABASE.keys())])))
+            ":".join(map(str,
+                         ([values[x] for x in sorted(DATABASE.keys())])))
         logger.debug(s)
 
         rrdtool.update(self.rrd_database, s)
@@ -216,6 +160,9 @@ formatter = logging.Formatter(
 handler = logging.FileHandler("/mnt/ramdisk/weather.log")
 handler.setFormatter(formatter)
 logger.addHandler(handler)
+
+app.run()
+aoeus()
 
 daemon_runner = runner.DaemonRunner(app)
 # This ensures that the logger file handle does not get closed during
