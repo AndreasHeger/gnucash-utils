@@ -31,6 +31,7 @@ CONFIG = {
     "LandingTop": "o10.ED859D020800",
     "LandingMiddle": "28-000004d3f73e",
     "LandingBottom": "10-0008029dc359",
+    "HotWater": "o10.B1B29D020800",
 }
 
 SENSOR_GROUPS = [(
