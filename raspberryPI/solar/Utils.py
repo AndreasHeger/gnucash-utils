@@ -123,9 +123,9 @@ def parseWeather(infile):
     txt = "".join(take)
     
     decoded = json.loads(txt)
-    
-    return dict(
+    current = decoded["current_observation"]
+    return dict((
         ("temperature", decoded["temperature"]),
         ("wind_direction", decoded["wind_dir_degrees"]),
-        ("wind_speed", decoded["wind_speed"]))
+        ("wind_speed", decoded["wind_speed"])))
 
