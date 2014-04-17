@@ -6,6 +6,7 @@ echo "setting up monitoring of weather and temperature"
 cp monitor_weather.sh /etc/init.d/monitor_weather
 chmod 755 /etc/init.d/monitor_weather
 cp monitor_weather.py /usr/share/solar/monitor_weather.py
+cp Utils.py /usr/share/solar/Utils.py
 chmod u+x /etc/init.d/monitor_weather
 update-rc.d monitor_weather defaults 80
 
