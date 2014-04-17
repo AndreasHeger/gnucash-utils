@@ -43,6 +43,7 @@ SENSOR_GROUPS = [(
     "NiamhRoomBack",
     "NiamhRoomTop",
     "LandingTop",
+    "HotWater",
 ),
     (
         "LivingRoomWindow",
