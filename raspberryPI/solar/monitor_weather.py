@@ -163,7 +163,6 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 
 app.run()
-aoeus()
 
 daemon_runner = runner.DaemonRunner(app)
 # This ensures that the logger file handle does not get closed during

@@ -88,13 +88,6 @@ def statusToHTML(status):
     status_string = " ".join(status_string)
     return status_string
 
-rx_temp = re.compile('tempActual.*pwsid="([^"]+)".*value="([^"]+)"')
-rx_winddirection = re.compile('windCompass.*pwsid="([^"]+)".*value="([^"]+)"')
-rx_windspeed = re.compile(
-    'windCompassSpeed.*pwsid="([^"]+)".*>([0-9.]+)</span>')
-rx_sunrise = re.compile('"sRise".*>([0-9.:]+)</span> AM</div>')
-rx_sunset = re.compile('"sSet".*>([0-9.:]+)</span> PM</div>')
-
 
 def time2float(timeval):
     '''converts a x:xx value to hrs.'''
