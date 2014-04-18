@@ -34,6 +34,12 @@ COLLECTIONS = {
      'LandingMiddle': ('#00AA00', 55, 'LandingMiddle'),
      'LandingBottom': ('#008800', 55, 'LandingBottom'),
      },
+    'bottom-pi':
+    {'HallwayTop': ('#FF0000', 55, 'HallwayTop'),
+     'HallwayBottom': ('#990000', 55, 'HallwayBottom'),
+     'BackRoomBack': ('#00AA00', 55, 'BackRoomBack'),
+     'BackRoomFront': ('#008800', 55, 'BackRoomFront'),
+     },
 }
 
 definition = 'DEF:%(key)s=%(DIR)s/temperature.rrd:%(key)s:AVERAGE'

@@ -32,25 +32,31 @@ CONFIG = {
     "LandingMiddle": "28-000004d3f73e",
     "LandingBottom": "10-0008029dc359",
     "HotWater": "o10.B1B29D020800",
+    "HallwayTop": "28-000004d422f5",
+    "HallwayBottom": "28-000004d49218",
+    "BackRoomBottom": "28-00000584f21d",
+    "BackRoomTop": "28-0000058528bc",
 }
 
-SENSOR_GROUPS = [(
-    "KeevaRoomBack",
-    "KeevaRoomTop",
-    "KeevaCupBoard",
-    "AiringCabinet",
-    "Attic",
-    "NiamhRoomBack",
-    "NiamhRoomTop",
-    "LandingTop",
-    "HotWater",
-),
-    (
-        "LivingRoomWindow",
-        "LivingRoomCupBoard",
-        "LandingMiddle",
-        "LandingBottom",
-    )]
+SENSOR_GROUPS = [
+    ("KeevaRoomBack",
+     "KeevaRoomTop",
+     "KeevaCupBoard",
+     "AiringCabinet",
+     "Attic",
+     "NiamhRoomBack",
+     "NiamhRoomTop",
+     "LandingTop",
+     "HotWater"),
+    ("LivingRoomWindow",
+     "LivingRoomCupBoard",
+     "LandingMiddle",
+     "LandingBottom"),
+    ("HallwayTop",
+     "HallwayBottom",
+     "BackRoomBack",
+     "BackRoomFront"),
+]
 
 MIN_TEMPERATURE = -50
 MAX_TEMPERATURE = 100
