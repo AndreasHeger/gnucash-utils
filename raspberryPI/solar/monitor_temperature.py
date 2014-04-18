@@ -113,7 +113,9 @@ class App():
             self.sensor_group = 1
         elif HOSTNAME == "bottom-pi":
             self.sensor_group = 2
-
+        else:
+            raise ValueError('unknown host')
+            
     def run(self):
         '''main loop. 
         '''
