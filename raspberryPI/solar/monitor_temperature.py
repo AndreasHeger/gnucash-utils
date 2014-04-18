@@ -35,7 +35,7 @@ CONFIG = {
     "HallwayTop": "28-000004d422f5",
     "HallwayBottom": "28-000004d49218",
     "BackRoomBack": "28-00000584f21d",
-    "BackRoomTop": "28-0000058528bc",
+    "BackRoomFront": "28-0000058528bc",
 }
 
 SENSOR_GROUPS = [
