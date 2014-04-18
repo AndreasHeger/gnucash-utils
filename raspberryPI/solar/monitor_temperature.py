@@ -34,7 +34,7 @@ CONFIG = {
     "HotWater": "o10.B1B29D020800",
     "HallwayTop": "28-000004d422f5",
     "HallwayBottom": "28-000004d49218",
-    "BackRoomBottom": "28-00000584f21d",
+    "BackRoomBack": "28-00000584f21d",
     "BackRoomTop": "28-0000058528bc",
 }
 
