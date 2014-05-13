@@ -59,7 +59,8 @@ def createTables(dbh, databases, logger):
             ff = ",".join(["%s FLOAT" % f for f in data['ds']])
 
             statement = '''
-            CREATE TABLE %(tablename)s (time INT UNIQUE ON CONFLICT IGNORE, %(ff)s)
+            CREATE TABLE %(tablename)s
+            (time INT UNIQUE ON CONFLICT IGNORE, %(ff)s)
             ''' % locals()
             logger.debug(statement)
             try:
