@@ -65,7 +65,12 @@ def getStatusFromLog(logfile, max_delta=120):
     else:
         results = []
         for section in status.split(","):
-            results.append(section.split("="))
+            try:
+                key, value = section.split("=")
+            except ValueError:
+                raise ValueError(
+                    'parsing error for %s' % section)
+            results.append((key, value))
         return results
 
 
