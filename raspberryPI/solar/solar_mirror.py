@@ -1,15 +1,10 @@
 import sqlite3
 import sys
 import os
-import re
 import optparse
 import logging
 import ConfigParser
 import itertools
-import collections
-
-from csv import writer
-from itertools import chain, izip
 from lxml.etree import parse
 
 
@@ -29,7 +24,7 @@ def headers(tree):
 
 
 def iter_rra(tree):
-    '''iterate over tree, yielding tuples of 
+    '''iterate over tree, yielding tuples of
     (rra database, [timestamp, value1, value2, ...]).
     '''
 
@@ -148,7 +143,7 @@ def mirrorData(dbh, databases, user, host, logger, srcdir):
 
 def main(argv=None):
 
-    if argv == None:
+    if argv is None:
         argv = sys.argv
 
     parser = optparse.OptionParser()
@@ -220,6 +215,10 @@ def main(argv=None):
                        host=config.get('default', 'host'),
                        srcdir=config.get('default', 'srcdir'),
                        logger=logger)
+
+        else:
+            raise ValueError("unknown command %s" % command)
+
     logger.info("completed successfully")
 
 if __name__ == "__main__":
