@@ -108,18 +108,26 @@ def parseWeather(infile):
     station, temperature = None, None
     wind_direction, wind_speed = None, None
 
-    keep = False
-    take = []
+    keep = 0
+    take = ['{']
     for x in infile:
-        if x.startswith("{"):
-            keep = True
-        elif x.startswith(";"):
-            break
-        if keep:
-            take.append(x)
+        x = x.strip()
+        if x.startswith('"current_observation": {'):
+            keep = 1
+        elif '{' in x: 
+            if keep > 0:
+                keep += 1
+        elif '}' in x:
+            keep -= 1
+            if keep == 0:
+                take.append(x)
+                break
 
-    txt = "".join(take)
+        if keep > 0:
+            take.append(x)
     
+    take.append('}')
+    txt = "\n".join(take)
     decoded = json.loads(txt)
     current = decoded["current_observation"]
     return dict((
