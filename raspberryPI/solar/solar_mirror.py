@@ -82,7 +82,7 @@ def mirrorData(dbh, databases, user, host, logger, srcdir):
         xml_file = key + ".xml"
 
         logger.debug("retrieving data for %s" % key)
-        statement = 'ssh %(user)s@%(host)s "rrdtool dump %(srcdir)s/%(key)s" > %(xml_file)s' % locals()
+        statement = 'ssh -i .ssh/pi_rsa  %(user)s@%(host)s "rrdtool dump %(srcdir)s/%(key)s" > %(xml_file)s' % locals()
         logger.debug(statement)
         os.system(statement)
 
