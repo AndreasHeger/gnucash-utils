@@ -1,6 +1,6 @@
 #! /bin/bash
 
-echo "mirroring from monitoring stations"
+echo "mirroring from monitoring stations at `date`"
 echo "mid-pi"
 python solar_mirror.py --config=mirror_mid-pi.ini mirror
 echo "top-pi"
@@ -22,3 +22,4 @@ fi
 echo "unmounting diskstation"
 umount /mnt/diskstation
 
+echo "mirroring completed at `date`"
