@@ -32,10 +32,12 @@ CONFIG = {
     "LandingMiddle": "28-000004d3f73e",
     "LandingBottom": "10-0008029dc359",
     "HotWater": "o10.B1B29D020800",
+    "BoilerWater": "o10.0ec89d020800",
     "HallwayTop": "28-000004d49218",
     "HallwayBottom": "28-000004d422f5",
     "BackRoomFront": "28-00000584f21d",
     "BackRoomBack": "28-0000058528bc",
+
 }
 
 SENSOR_GROUPS = [
@@ -47,7 +49,8 @@ SENSOR_GROUPS = [
      "NiamhRoomBack",
      "NiamhRoomTop",
      "LandingTop",
-     "HotWater"),
+     "HotWater",
+     "BoilerWater"),
     ("LivingRoomWindow",
      "LivingRoomCupBoard",
      "LandingMiddle",

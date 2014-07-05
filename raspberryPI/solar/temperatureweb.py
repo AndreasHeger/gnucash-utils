@@ -27,6 +27,7 @@ COLLECTIONS = {
      'NiamhRoomTop': ('#17A8EA', 57, 'NiamhRoomTop'),
      'LandingTop': ('#10A8E0', 57, 'LandingTop'),
      'HotWater': ('#FF0000', 57, 'HotWater'),
+     'BoilerWater': ('#CC0000', 57, 'BoilerWater'),
      },
     'mid-pi':
     {'LivingRoomWindow': ('#FF0000', 55, 'LivingRoomWindow'),
