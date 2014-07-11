@@ -1,5 +1,27 @@
 #!/usr/bin/env python
 '''Monitor temperature.
+
+Adding a new sensor
+===================
+
+1. Mirror all data. The steps below will delete the values in the
+   existing rrd database.
+
+2. Add columns for the new sensor to the relevant tables in the sqlite
+   database. For example::
+
+      for x in `sqlite3 csvdb ".tables" | xargs --max-args=1 | grep top_temperature`; do  \
+           sqlite3 csvdb "ALTER TABLE $x ADD COLUMN BoilerWater FLOAT;"; done
+
+3. Stop the monitoring daemon
+
+3. Delete old rrd database. For example::
+
+      rm /mnt/ramdisk/temperature.rrd
+
+4. Restart the monitoring daemon. The new rrd will be
+   automatically created.
+
 '''
 
 import os
@@ -14,10 +36,6 @@ from daemon import runner
 
 HOSTNAME = socket.gethostname()
 
-##########################################################################
-##########################################################################
-##########################################################################
-##########################################################################
 CONFIG = {
     "KeevaRoomBack": '10-0008029db5bc',
     "KeevaRoomTop": 'o28.3DA0D4040000',
