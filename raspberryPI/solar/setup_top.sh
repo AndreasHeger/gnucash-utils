@@ -3,6 +3,23 @@
 echo "pi-top"
 echo "setting up monitoring of weather and temperature"
 
+echo "pi-top" /etc/hostname
+
+if grep --quiet ramdisk /etc/fstab; then
+    echo "fstab entry for ramdisk exists"
+else
+    echo "adding fstab entry for ramdisk"
+    echo "tmpfs           /mnt/ramdisk tmpfs      defaults,size=256M 0 0" > /etc/fstab
+    echo "rebooting"
+    reboot
+fi
+
+mkdir /usr/share/solar
+mkdir /usr/lib/cgi-bin
+mkdir /mn/ramdisk
+
+echo "setting up monitoring of temperature and weather"
+
 cp monitor_weather.sh /etc/init.d/monitor_weather
 chmod 755 /etc/init.d/monitor_weather
 cp monitor_weather.py /usr/share/solar/monitor_weather.py
@@ -19,3 +36,4 @@ cp *web.py Utils.py /usr/lib/cgi-bin/
 chown -R www-data:www-data /usr/lib/cgi-bin/*.py /mnt/ramdisk
 cp images/*.png /mnt/ramdisk
 sudo rename 's/S01/S90/' /etc/rc*.d/S*monito*
+
