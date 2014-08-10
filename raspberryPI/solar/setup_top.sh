@@ -1,14 +1,15 @@
 #!/bin/bash
 
-echo "pi-top"
+echo "top-pi"
 echo "setting up monitoring of weather and temperature"
 
-echo "pi-top" > /etc/hostname
+echo "top-pi" > /etc/hostname
 
 if grep --quiet ramdisk /etc/fstab; then
     echo "fstab entry for ramdisk exists"
 else
     echo "adding fstab entry for ramdisk"
+    mkdir /mnt/ramdisk
     echo "tmpfs           /mnt/ramdisk tmpfs      defaults,size=256M 0 0" >> /etc/fstab
     echo "rebooting"
     reboot
@@ -17,11 +18,8 @@ fi
 
 apt-get -y install rrdtool python-rrdtool python-daemon ganglia-webfrontend
 
-
-
 mkdir /usr/share/solar
 mkdir /usr/lib/cgi-bin
-mkdir /mnt/ramdisk
 
 echo "setting up monitoring of temperature and weather"
 
@@ -42,7 +40,7 @@ chown -R www-data:www-data /usr/lib/cgi-bin/*.py /mnt/ramdisk
 cp images/*.png /mnt/ramdisk
 sudo rename 's/S01/S90/' /etc/rc*.d/S*monito*
 
-Setting up ramdisk backup
+echo "Setting up ramdisk backup"
 mkdir /var/ramdisk-backup
 mv ramdisk_backup.sh /etc/init.d/ramdisk
 chmod 755 /etc/init.d/ramdisk
@@ -50,7 +48,7 @@ chown root:root /etc/init.d/ramdisk
 
 update-rc.d ramdisk defaults 00 99
 
-# echo "# setting ramdisk backup"
-# echo "@daily  /etc/init.d/ramdisk sync >> /dev/null 2>&1" | crontab
+echo "# setting ramdisk backup"
+echo "@daily  /etc/init.d/ramdisk sync >> /dev/null 2>&1" | crontab
 
 
