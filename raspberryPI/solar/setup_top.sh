@@ -3,7 +3,7 @@
 echo "pi-top"
 echo "setting up monitoring of weather and temperature"
 
-echo "pi-top" /etc/hostname
+echo "pi-top" > /etc/hostname
 
 if grep --quiet ramdisk /etc/fstab; then
     echo "fstab entry for ramdisk exists"
@@ -12,6 +12,7 @@ else
     echo "tmpfs           /mnt/ramdisk tmpfs      defaults,size=256M 0 0" >> /etc/fstab
     echo "rebooting"
     reboot
+    exit 0
 fi
 
 mkdir /usr/share/solar
