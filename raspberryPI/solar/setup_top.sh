@@ -15,6 +15,10 @@ else
     exit 0
 fi
 
+apt-get -y install rrdtool python-rrdtool python-daemon ganglia-webfrontend
+
+
+
 mkdir /usr/share/solar
 mkdir /usr/lib/cgi-bin
 mkdir /mnt/ramdisk
