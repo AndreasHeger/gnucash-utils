@@ -9,7 +9,7 @@ if grep --quiet ramdisk /etc/fstab; then
     echo "fstab entry for ramdisk exists"
 else
     echo "adding fstab entry for ramdisk"
-    echo "tmpfs           /mnt/ramdisk tmpfs      defaults,size=256M 0 0" > /etc/fstab
+    echo "tmpfs           /mnt/ramdisk tmpfs      defaults,size=256M 0 0" >> /etc/fstab
     echo "rebooting"
     reboot
 fi
