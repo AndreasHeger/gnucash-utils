@@ -1,3 +1,7 @@
+# Install packages needed
+
+
+
 # Instructions from http://blog.pi3g.com/2014/04/make-raspbian-system-read-only/
 #
 # run as sudo ./make_ro.sh

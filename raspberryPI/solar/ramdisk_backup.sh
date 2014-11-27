@@ -29,13 +29,17 @@ case "$1" in
     ;;
   sync)
     echo "Synching files from ramdisk to Harddisk"
+    /usr/bin/rpi-rw
     echo [`date +"%Y-%m-%d %H:%M"`] Ramdisk Synched to HD >> /var/log/ramdisk_sync.log
     rsync -av --delete --recursive --force /mnt/ramdisk/ /var/ramdisk-backup/
+    /usr/bin/rpi-ro
     ;;
   stop)
     echo "Synching logfiles from ramdisk to Harddisk"
+    /usr/bin/rpi-rw
     echo [`date +"%Y-%m-%d %H:%M"`] Ramdisk Synched to HD >> /var/log/ramdisk_sync.log
     rsync -av --delete --recursive --force /mnt/ramdisk/ /var/ramdisk-backup/
+    /usr/bin/rpi-ro
     ;;
   *)
     echo "Usage: /etc/init.d/ramdisk {start|stop|sync}"
