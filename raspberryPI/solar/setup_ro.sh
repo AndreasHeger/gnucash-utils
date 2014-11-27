@@ -17,12 +17,15 @@ apt-get autoremove --purge
 apt-get -y install rrdtool python-rrdtool python-daemon apache2
 
 # turn off 
+if [ ! -e /etc/default/rcS.orig ]; then
 cp /etc/default/rcS /etc/default/rcS.orig
 sh -c "echo 'RAMTMP=yes' >> /etc/default/rcS"
+fi
 
 mkdir /mnt/ramdisk
 
 # create fstab
+if [ ! -e /etc/fstab.orig ] ; then
 mv /etc/fstab /etc/fstab.orig
 sh -c "echo 'tmpfs           /tmp            tmpfs   nodev,nosuid,size=30M,mode=1777       0    0' >> /etc/fstab"
 sh -c "echo 'tmpfs           /var/log        tmpfs   nodev,nosuid,size=30M,mode=1777       0    0' >> /etc/fstab"
@@ -32,8 +35,12 @@ sh -c "echo '/dev/mmcblk0p2  /               ext4    defaults,ro,noatime,errors=
 sh -c "echo 'tmpfs           /mnt/ramdisk    tmpfs   defaults,size=200M                    0    0' >> /etc/fstab"
 
 sh -c "echo ' ' >> /etc/fstab"
+fi
+
+if [ ! -e /etc/mtab.orig ]; then
 mv /etc/mtab /etc/mtab.orig
 ln -s /proc/self/mounts /etc/mtab
+fi
 
 cat <<EOT1 > /usr/bin/rpi-rw
 #!/bin/sh
