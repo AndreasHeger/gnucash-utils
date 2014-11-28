@@ -5,13 +5,13 @@
 apt-get -y update
 apt-get -y upgrade
 
-apt-get remove --purge wolfram-engine triggerhappy
+apt-get -y remove --purge wolfram-engine triggerhappy
 # Remove X-Server and related stuff:
 apt-get remove --purge xserver-common lightdm
 insserv -r x11-common
 
 # auto-remove some X11 related libs
-apt-get autoremove --purge
+apt-get -y autoremove --purge
 
 # install packages required for monitoring
 apt-get -y install rrdtool python-rrdtool python-daemon apache2
@@ -32,8 +32,10 @@ sh -c "echo 'tmpfs           /var/log        tmpfs   nodev,nosuid,size=30M,mode=
 sh -c "echo 'proc            /proc           proc    defaults                              0    0' >> /etc/fstab"
 sh -c "echo '/dev/mmcblk0p1  /boot           vfat    defaults                              0    2' >> /etc/fstab"
 sh -c "echo '/dev/mmcblk0p2  /               ext4    defaults,ro,noatime,errors=remount-ro 0    1' >> /etc/fstab"
+# add ramdisk for monitoring
 sh -c "echo 'tmpfs           /mnt/ramdisk    tmpfs   defaults,size=200M                    0    0' >> /etc/fstab"
-
+# add mount point for diskstation
+sh -c "echo '192.168.0.2:/volume1/data       /mnt/diskstation        nfs     user,noauto' >> /etc/fstab"
 sh -c "echo ' ' >> /etc/fstab"
 fi
 
@@ -63,24 +65,42 @@ mkdir /usr/share/solar
 mkdir /usr/lib/cgi-bin
 
 #######################################################
-echo "setting up monitoring of temperature and weather"
+echo "setting up monitoring of solar"
+
+cp monitor_solar.sh /etc/init.d/monitor_solar
+chmod 755 /etc/init.d/monitor_solar
+cp monitor_solar.py /usr/share/solar/monitor_solar.py
+chmod u+x /etc/init.d/monitor_solar
+
+#######################################################
+echo "setting up monitoring of weather"
 
 cp monitor_weather.sh /etc/init.d/monitor_weather
 chmod 755 /etc/init.d/monitor_weather
 cp monitor_weather.py /usr/share/solar/monitor_weather.py
-cp Utils.py /usr/share/solar/Utils.py
 chmod u+x /etc/init.d/monitor_weather
-update-rc.d monitor_weather defaults 80
 
+#######################################################
+echo "setting up monitoring of temperature"
 cp monitor_temperature.sh /etc/init.d/monitor_temperature
 chmod 755 /etc/init.d/monitor_temperature
 cp monitor_temperature.py /usr/share/solar/monitor_temperature.py
 chmod u+x /etc/init.d/monitor_temperature
-update-rc.d monitor_temperature defaults 80
+
+#######################################################
+echo "setting up web services"
 cp *web.py Utils.py /usr/lib/cgi-bin/
+cp Utils.py /usr/share/solar/Utils.py
 chown -R www-data:www-data /usr/lib/cgi-bin/*.py /mnt/ramdisk
 cp images/*.png /mnt/ramdisk
-sudo rename 's/S01/S90/' /etc/rc*.d/S*monito*
+
+# The following needs to be done to activate the various services
+# depending on which machine we are on:
+#
+# update-rc.d monitor_weather defaults 80
+# update-rc.d monitor_temperature defaults 80
+# update-rc.d monitor_solar defaults 80
+# sudo rename 's/S01/S90/' /etc/rc*.d/S*monito*
 
 ##########################################################
 # Turned off because of RO
@@ -91,11 +111,9 @@ mv ramdisk_backup.sh /etc/init.d/ramdisk
 chmod 755 /etc/init.d/ramdisk
 chown root:root /etc/init.d/ramdisk
 
-# update-rc.d ramdisk defaults 00 99
-# 
-echo "# setting ramdisk backup"
+update-rc.d ramdisk defaults 00 99
+ 
+echo "# setting up daily ramdisk backup"
 echo "@daily  /etc/init.d/ramdisk sync >> /dev/null 2>&1" | crontab
-
-
 
 

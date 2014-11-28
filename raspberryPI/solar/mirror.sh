@@ -1,6 +1,10 @@
 #! /bin/bash
 
 echo "mirroring from monitoring stations at `date`"
+
+echo "switching SD-card to RW mode"
+/usr/bin/rpi-rw
+
 echo "mid-pi"
 python solar_mirror.py --config=mirror_mid-pi.ini mirror
 echo "top-pi"
@@ -21,5 +25,8 @@ fi
 
 echo "unmounting diskstation"
 umount /mnt/diskstation
+
+echo "switching SD-card to read-only mode"
+/usr/bin/rpi-ro
 
 echo "mirroring completed at `date`"
