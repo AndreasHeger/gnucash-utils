@@ -11,7 +11,8 @@ sudo rename 's/S01/S90/' /etc/rc*.d/S*monito*
 
 echo "setting up mirroring"
 # setup mirroring
-# Note: need to setup passwordless ssh beforehand
+# Note: you need to setup passwordless ssh beforehand
+# by running:
 # ssh-copy-id -i .ssh/pi_rsa pi@192.168.0.55
 # ssh-copy-id -i .ssh/pi_rsa pi@192.168.0.57
 # ssh-copy-id -i .ssh/pi_rsa pi@192.168.0.59
@@ -19,10 +20,9 @@ echo "setting up mirroring"
 # scp -i .ssh/pi_rsa .ssh/pi_rsa pi@192.168.0.57:.ssh/
 # scp -i .ssh/pi_rsa .ssh/pi_rsa pi@192.168.0.59:.ssh/
 
-# sudo rename 's/S01/S90/' /etc/rc*.d/S*monito*
-# sudo apt-get install sqlite3 python-lxml
+apt-get install sqlite3 python-lxml
 # make sure rpcbind is started at boot
-# sudo update-rc.d rpcbind enable
+update-rc.d rpcbind enable
 
 echo "setting up mirroring"
 
