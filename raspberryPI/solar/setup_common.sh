@@ -7,7 +7,7 @@ apt-get -y upgrade
 
 apt-get -y remove --purge wolfram-engine triggerhappy
 # Remove X-Server and related stuff:
-apt-get remove --purge xserver-common lightdm
+apt-get -y remove --purge xserver-common lightdm
 insserv -r x11-common
 
 # auto-remove some X11 related libs
@@ -116,4 +116,6 @@ update-rc.d ramdisk defaults 00 99
 echo "# setting up daily ramdisk backup"
 echo "@daily  /etc/init.d/ramdisk sync >> /dev/null 2>&1" | crontab
 
+# If apache does not start up, 
+# make sure /var/log/apache2 exists
 
