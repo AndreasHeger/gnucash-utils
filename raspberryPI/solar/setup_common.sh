@@ -67,12 +67,9 @@ mkdir /usr/lib/cgi-bin
 #######################################################
 echo "change /etc/init.d/apache2 to create log dir"
 if [ ! -e /etc/init.d/apache2.orig ] ; then
-cp /etc/init.d/apache2 /etc/init.d/apach2.orig
-cat <<EOF >> /etc/init.d/apache2
-if [ ! -e /var/log/apache2 ] ; then
-m  mkdir /var/lorg/apache2
-fi 
-EOF
+cp /etc/init.d/apache2 /etc/init.d/apache2.orig)
+perl -p -e "s/start\)\n/start)\nmkdir /var/log/apache2" < /etc/init.d/apache2.orig > /etc/init.d/apache2
+fi
 
 #######################################################
 echo "setting up monitoring of solar"
