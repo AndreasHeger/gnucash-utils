@@ -65,6 +65,16 @@ mkdir /usr/share/solar
 mkdir /usr/lib/cgi-bin
 
 #######################################################
+echo "change /etc/init.d/apache2 to create log dir"
+if [ ! -e /etc/init.d/apache2.orig ] ; then
+cp /etc/init.d/apache2 /etc/init.d/apach2.orig
+cat <<EOF >> /etc/init.d/apache2
+if [ ! -e /var/log/apache2 ] ; then
+m  mkdir /var/lorg/apache2
+fi 
+EOF
+
+#######################################################
 echo "setting up monitoring of solar"
 
 cp monitor_solar.sh /etc/init.d/monitor_solar
