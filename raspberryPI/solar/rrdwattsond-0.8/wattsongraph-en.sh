@@ -10,8 +10,8 @@ export LC_ALL=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 
 RRDTOOL=/usr/bin/rrdtool
-OUTDIR=.
-RRDFILE=wattson.rrd
+OUTDIR=/mnt/ramdisk
+RRDFILE=/mnt/ramdisk/wattson.rrd
 WIDTH=600
 HEIGHT=250
 
