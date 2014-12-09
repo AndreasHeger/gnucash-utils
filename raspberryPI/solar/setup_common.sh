@@ -114,7 +114,7 @@ cp images/*.png /mnt/ramdisk
 #
 echo "Setting up ramdisk backup"
 mkdir /var/ramdisk-backup
-mv ramdisk_backup.sh /etc/init.d/ramdisk
+cp ramdisk_backup.sh /etc/init.d/ramdisk
 chmod 755 /etc/init.d/ramdisk
 chown root:root /etc/init.d/ramdisk
 

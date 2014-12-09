@@ -15,10 +15,10 @@ interval = 3
 rrd = wattson.rrd
 
 # Working directory (default: /var/rrdwattsond)
-workdir = /var/rrdwattsond
+workdir = /mnt/ramdisk/rrdwattsond
 
 # PID file (default: /var/rrdwattsond/wattsond.pid)
-pidfile = /var/rrdwattsond/wattsond.pid
+pidfile = /mnt/ramdisk/rrdwattsond/wattsond.pid
 
 # END
 
