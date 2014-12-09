@@ -5,7 +5,7 @@ echo "front-pi" > /etc/hostname
 
 echo "installing watson"
 
-(cd ./rrdwatsond-0.8; install.sh) 
+(cd ./rrdwattsond-0.8; install.sh) 
 
 echo "activating solar and temperature monitoring"
 # update-rc.d monitor_weather defaults 80
