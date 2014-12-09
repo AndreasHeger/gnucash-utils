@@ -1,0 +1,24 @@
+# Config file for rrdwattsond
+# In startup rrdwattsond tries to find this file first as
+# /etc/rrdwattsond.conf, then from current directory and
+# if none found, it uses default values. All values in config
+# file are optional as the config file existence.
+
+# Serial port (default: /tty/USB0)
+port = /dev/ttyUSB0
+
+# Interval in seconds to check power for getting max and min.
+# Set this to same as Wattson's transmitter. (default: 3)
+interval = 3
+
+# Round Robin database file (default: wattson.rrd)
+rrd = wattson.rrd
+
+# Working directory (default: /var/rrdwattsond)
+workdir = /var/rrdwattsond
+
+# PID file (default: /var/rrdwattsond/wattsond.pid)
+pidfile = /var/rrdwattsond/wattsond.pid
+
+# END
+

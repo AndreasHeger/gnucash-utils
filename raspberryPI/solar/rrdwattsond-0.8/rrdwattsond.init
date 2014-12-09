@@ -1,0 +1,27 @@
+#!/bin/sh
+#
+
+rrdwattsond="/usr/local/bin/rrdwattsond"
+pidfile="/var/rrdwattsond/wattsond.pid"
+
+case $1 in
+'start')
+    $rrdwattsond
+    ;;
+
+'stop')
+    kill `cat $pidfile`
+    ;;
+
+'restart')
+    $0 stop
+    $0 start
+    ;;
+
+*)
+    echo "Usage: $0 { start | stop | restart }"
+    exit 1
+    ;;
+
+esac
+

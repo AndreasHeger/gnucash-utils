@@ -1,0 +1,49 @@
+                 RRDwattsond LUEMINUT   (README in Finnish)
+
+Jos et tiedä mikä RRDwattsond on, käy sivulla:
+   http://pikarinen.com/rrdwattsond/suomeksi.html
+
+Useimmiten asennus on hyvin helppo. Vedä root-pipo päähäsi sanomalla sudo -s
+ja aja install.sh, muokkaa konfiguraatiotiedosto ja käynnistä ohjelma.
+Sen jälkeen tee sopiva cron-jobi, joka generoi graafit ja mahdollisesti 
+siirtää ne web-sivustollesi.
+
+Ubuntu/Debian-paketit, joita tarvitaan perusasennuksen lisäksi:
+libdate-calc-perl rrdtool librrds-perl
+Eli siis rrdtool sekä Date::Calc ja RRDs modulit perlille, jos käytät jotain
+muuta kuin debian-pohjaista distribuutiota.
+
+Jos haluat siirtää kuvat web-sivustollesi, tee latausskripti itse. En voi
+tietää käytätkö siihen ftp:tä, scp:tä, rsynciä vai mitä, joten tämä on
+jätetty kotitehtäväksesi.
+
+Asennusskripti tallentaa konfiguraatiotiedoston /etc/rrdwattsond.conf
+Katso sitä ja muokkaa sopivat asetukset. Jos kaikki oletusarvot ovat ok,
+et tarvitse tiedostoa lainkaan, vaan voit poistaa sen.
+
+Jos et tiedä sarjaporttia, jossa Wattson näkyy, aja komento:
+
+  dmesg |grep "FTDI USB Serial Device"
+
+Tulosteesta löydät sarjaportin esimerkiksi ttyUSB0. Silloin oikea porttiasetus
+konfiguraatioon on /dev/ttyUSB0
+
+Asennusskripti asentaa kaksi versiota grafiikanpiirtoskriptistä 
+hakemistoon /usr/local/bin. Niistä wattsongraph-fi.sh on suomeksi ja 
+wattsongraph-en.sh vastaavasti englanniksi. Voit muokata skriptiin 
+web-sivustolle lähetyksen ja esimerkiksi vaihtaa hakemiston, jos et käytä
+oletuksia. Sen jälkeen voit laittaa skriptin ajettavaksi esimerkiksi 5min
+välein luomalla sopivannimisen tiedoston hakemistoon /etc/cron.d
+Tiedosto voi sisältää esimerkiksi rivin:
+
+*/5 * * * * root /usr/local/bin/wattsongraph-en.sh
+
+RRDwattsond tallentaa työhakemistoonsa tiedostoja joka yö. Keskiyöllä 
+tallentuu edellisen päivän tallennettu data sellaisenaan päiväyksen 
+mukaiseen tiedostoon energydata.YYYYMMDD ja lasketut kilowattitunnit 
+tiedostoon kwh.csv, johon tallentuu yksi rivi joka päivä. Jokaisella rivillä
+on päiväys ISO-8601 formaatissa sekä lasketut kilowattitunnit kolmella
+desimaalilla. TIedoston voi viedä esimerkiksi taulukkolaskentaan.
+
+Mukavaa graafinpiirtelyä.
+

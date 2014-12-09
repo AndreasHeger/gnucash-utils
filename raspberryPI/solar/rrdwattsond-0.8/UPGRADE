@@ -1,0 +1,8 @@
+Upgrading information
+
+From older to:
+
+0.7  Just copy the daemon 'rrdwattsond' to /usr/local/bin 
+     (or where you have it) and restart the daemon.
+     No other tasks needed.
+     
