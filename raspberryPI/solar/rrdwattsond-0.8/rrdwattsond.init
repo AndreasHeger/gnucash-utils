@@ -2,7 +2,7 @@
 #
 
 rrdwattsond="/usr/local/bin/rrdwattsond"
-pidfile="/var/rrdwattsond/wattsond.pid"
+pidfile="/mnt/ramdisk/wattsond.pid"
 
 case $1 in
 'start')

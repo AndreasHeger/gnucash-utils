@@ -3,7 +3,7 @@
 # sleep 5 seconds that rrdwattsond has enough time to write data to RRD
 sleep 5
 
-cd /var/rrdwattsond
+cd /mnt/ramdisk
 
 export LANG=fi_FI.UTF-8
 export LC_ALL=fi_FI.UTF-8

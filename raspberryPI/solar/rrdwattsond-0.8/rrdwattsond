@@ -34,8 +34,8 @@ my $config = {
     # interval to check power for getting max and min
     'interval' => 3,
     'rrd' => 'wattson.rrd',
-    'workdir' => '/var/rrdwattsond',
-    'pidfile' => "/var/rrdwattsond/wattsond.pid"
+    'workdir' => '/mnt/ramdisk',
+    'pidfile' => "/mnt/ramdisk/wattsond.pid"
 };
 
 my $time_to_die = 0;
