@@ -5,14 +5,14 @@ if [ `whoami` != "root" ] ;then
    exit
 fi
 
-mkdir -p /usr/local/bin /var/rrdwattsond
+mkdir -p /usr/local/bin
 cp rrdwattsond /usr/local/bin/
 cp rrdwattsond.init /etc/init.d/rrdwattsond
 cp rrdwattsond.conf.dist /etc/rrdwattsond.conf
 cp wattsongraph-en.sh /usr/local/bin/
 cp wattsongraph-fi.sh /usr/local/bin/
 ./make_rrd.sh
-mv wattson.rrd /var/rrdwattsond/
+mv wattson.rrd /mnt/ramdisk
 chmod a+x /usr/local/bin/rrdwattsond /etc/init.d/rrdwattsond
 chmod a+x /usr/local/bin/wattsongraph-fi.sh /usr/local/bin/wattsongraph-en.sh
 cd /etc/rc2.d
