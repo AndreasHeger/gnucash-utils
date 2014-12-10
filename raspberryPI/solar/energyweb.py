@@ -16,8 +16,9 @@ datestring = time.asctime(time.localtime(time.time()))
 
 rrd = os.path.join(DIR, "wattson.rrd")
 
-for period, trendtime in (("weekly", 43200),
-                           ("daily", 7200)):
+for name, period, trendtime in \
+    (("weekly", "24h", 43200),
+     ("daily", "1week", 7200)):
     rrdtool.graph(
         os.path.join(OUTDIR, "usage_%s.png" % period),
         "--start", "-%s" % period,
