@@ -20,11 +20,11 @@ for name, period, trendtime in \
     (("weekly", "24h", 43200),
      ("daily", "1week", 7200)):
     rrdtool.graph(
-        os.path.join(OUTDIR, "usage_%s.png" % period),
+        os.path.join(OUTDIR, "usage_%s.png" % name),
         "--start", "-%s" % period,
         "--width", str(WIDTH),
         "--height", str(HEIGHT),
-        "-v 'Watts'",
+        "-v Watts",
         "-t '%s' "% datestring,
         "DEF:avg=%(rrd)s:avgwatt:AVERAGE" % locals(),
         "DEF:min=%(rrd)s:minwatt:MIN" % locals(),
@@ -34,18 +34,18 @@ for name, period, trendtime in \
         "DEF:maxl=%(rrd)s:maxwatt:LAST" % locals(),
         "CDEF:smoothed=avg,%(trendtime)i,TREND" % locals(),
         "TEXTALIGN:left",
-        "AREA:max#FFAAAA:'max    '",
-        "GPRINT:max:MAX:'%5.0lf W'",
+        "AREA:max#FFAAAA:max    ",
+        "GPRINT:max:MAX:%5.0lf W",
         "LINE:max#990000:",
-        "GPRINT:maxl:LAST:'(last %5.0lf W)\l'",
-        "AREA:avg#0095E4:'average'",
-        "GPRINT:avg:AVERAGE:'%5.0lf W'",
-        "GPRINT:avg:LAST:'(last %5.0lf W)\l'",
-        "LINE:min#DFEBFA:'min    '",
-        "GPRINT:min:MIN:'%5.0lf W'",
-        "GPRINT:min:LAST:'(last %5.0lf W)\l'",
+        "GPRINT:maxl:LAST:(last %5.0lf W)\l",
+        "AREA:avg#0095E4:average",
+        "GPRINT:avg:AVERAGE:%5.0lf W",
+        "GPRINT:avg:LAST:(last %5.0lf W)\l",
+        "LINE:min#DFEBFA:min    ",
+        "GPRINT:min:MIN:%5.0lf W",
+        "GPRINT:min:LAST:(last %5.0lf W)\l",
         "LINE:avg#0000FF:",
-        "LINE2:smoothed#000000:'average trend'"
+        "LINE2:smoothed#000000:average trend"
     )
 
 
