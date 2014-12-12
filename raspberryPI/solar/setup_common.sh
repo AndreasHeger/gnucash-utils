@@ -14,7 +14,7 @@ insserv -r x11-common
 apt-get -y autoremove --purge
 
 # install packages required for monitoring
-apt-get -y install rrdtool python-rrdtool python-daemon apache2
+apt-get -y install rrdtool python-rrdtool python-daemon apache2 python-serial
 
 # turn off 
 if [ ! -e /etc/default/rcS.orig ]; then
@@ -100,6 +100,7 @@ cp *web.py Utils.py /usr/lib/cgi-bin/
 cp Utils.py /usr/share/solar/Utils.py
 chown -R www-data:www-data /usr/lib/cgi-bin/*.py /mnt/ramdisk
 cp images/*.png /mnt/ramdisk
+ln -s /mnt/ramdisk /var/www/images
 
 # The following needs to be done to activate the various services
 # depending on which machine we are on:
