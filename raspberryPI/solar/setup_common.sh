@@ -95,6 +95,11 @@ cp monitor_temperature.py /usr/share/solar/monitor_temperature.py
 chmod u+x /etc/init.d/monitor_temperature
 
 #######################################################
+echo "setting up monitoring of wattson"
+cp monitor_wattson.py /usr/share/solar/monitor_wattson.py
+chmod u+x /etc/init.d/monitor_wattson
+
+#######################################################
 echo "setting up web services"
 cp *web.py Utils.py /usr/lib/cgi-bin/
 cp Utils.py /usr/share/solar/Utils.py

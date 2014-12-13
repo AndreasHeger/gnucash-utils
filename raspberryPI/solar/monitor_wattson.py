@@ -4,19 +4,16 @@
 
 import os
 import time
-import sys
 import logging
-import subprocess
 import rrdtool
 import serial
-import io
-import termios
+import re
 
 # third party libs
 from daemon import runner
 
 # for solar monitoring
-import re
+
 
 RANGES = {'grid_power': (0, 10000),
           'solar_power': (0, 4000)}
@@ -172,7 +169,6 @@ class App():
                                     solar_power)
 
                 time.sleep(HEART_BEAT)
-                
             logger.warn("lost connection - will retry")
 
     def updateDatabase(self, grid_power, solar_power):
@@ -231,7 +227,7 @@ formatter = logging.Formatter(
 handler = logging.FileHandler("/mnt/ramdisk/wattson.log")
 handler.setFormatter(formatter)
 logger.addHandler(handler)
-app.run()
+# app.run()
 
 daemon_runner = runner.DaemonRunner(app)
 # This ensures that the logger file handle does not get closed during

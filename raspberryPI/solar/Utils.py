@@ -51,7 +51,7 @@ def getStatusFromLog(logfile, max_delta=120):
     lastline = getLastLine(logfile, re.compile("INFO - status"))
 
     d_date, d_time, status = re.match(
-        "(\S+) (\S+) - DaemonLog - INFO - status: (\S+)",
+        "(\S+) (\S+) - DaemonLog - INFO - status: (.+)",
         lastline).groups()
 
     current_time = datetime.datetime.now()
@@ -66,7 +66,7 @@ def getStatusFromLog(logfile, max_delta=120):
         results = []
         for section in status.split(","):
             try:
-                key, value = section.split("=")
+                key, value = section.strip().split("=")
             except ValueError:
                 raise ValueError(
                     'parsing error for %s' % section)
