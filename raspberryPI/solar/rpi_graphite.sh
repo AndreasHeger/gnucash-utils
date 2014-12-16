@@ -57,9 +57,11 @@ sed -i 's|80|8080|' /etc/apache2/sites-available/graphite
 echo "Listen 8080" >> /etc/apache2/sites-available/graphite
 
 # mv storage to hard disk
-mkdir /mnt/ramdisk/graphite
-mv /opt/graphite/storage /mnt/ramdisk/graphite
-ln -s /mnt/ramdisk/graphit/storage /opt/graphite/storage
+if [ ! -d /mnt/ramdisk/graphite ] ; then 
+    mkdir /mnt/ramdisk/graphite
+    mv /opt/graphite/storage /mnt/ramdisk/graphite
+    ln -s /mnt/ramdisk/graphit/storage /opt/graphite/storage
+fi
 
 # copy configuration files
 cp graphite/*.conf /opt/graphite/conf
