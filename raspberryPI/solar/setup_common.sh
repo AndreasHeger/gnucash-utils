@@ -2,19 +2,19 @@
 # 
 # See: http://openenergymonitor.org/emon/node/5331
 
-apt-get -y update
-apt-get -y upgrade
+# apt-get -y update
+# apt-get -y upgrade
 
-apt-get -y remove --purge wolfram-engine triggerhappy
-# Remove X-Server and related stuff:
-apt-get -y remove --purge xserver-common lightdm
-insserv -r x11-common
+# apt-get -y remove --purge wolfram-engine triggerhappy
+# # Remove X-Server and related stuff:
+# apt-get -y remove --purge xserver-common lightdm
+# insserv -r x11-common
 
-# auto-remove some X11 related libs
-apt-get -y autoremove --purge
+# # auto-remove some X11 related libs
+# apt-get -y autoremove --purge
 
-# install packages required for monitoring
-apt-get -y install rrdtool python-rrdtool python-daemon apache2 python-serial
+# # install packages required for monitoring
+# apt-get -y install rrdtool python-rrdtool python-daemon apache2 python-serial
 
 # turn off 
 if [ ! -e /etc/default/rcS.orig ]; then
@@ -102,7 +102,7 @@ chmod u+x /etc/init.d/monitor_wattson
 #######################################################
 echo "setting up web services"
 cp *web.py Utils.py /usr/lib/cgi-bin/
-cp Utils.py /usr/share/solar/Utils.py
+cp Monitor.py Utils.py /usr/share/solar/
 chown -R www-data:www-data /usr/lib/cgi-bin/*.py /mnt/ramdisk
 cp images/*.png /mnt/ramdisk
 ln -s /mnt/ramdisk /var/www/images
