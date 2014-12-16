@@ -56,6 +56,11 @@ wget https://raw.github.com/tmm1/graphite/master/examples/example-graphite-vhost
 sed -i 's|80|8080|' /etc/apache2/sites-available/graphite
 echo "Listen 8080" >> /etc/apache2/sites-available/graphite
 
+# mv storage to hard disk
+mkdir /mnt/ramdisk/graphite
+mv /opt/graphite/storage /mnt/ramdisk/graphite
+ln -s /mnt/ramdisk/graphit/storage /opt/graphite/storage
+
 # copy configuration files
 cp graphite/*.conf /opt/graphite/conf
 
@@ -64,10 +69,17 @@ mkdir -p /etc/httpd/wsgi/
 
 #Local settings from example
 cp graphite/local_settings.py /opt/graphite/webapp/graphite/local_settings.py
+
 # SyncDB - requires interaction
-cd /opt/graphite/webapp/graphite && python manage.py syncdb #prompts for input
-#OR cd /opt/graphite/webapp/graphite && python manage.py syncdb --noinput
+# work around a bug in django
+export LC_ALL="en_US.UTF-8"
+cd /opt/graphite/webapp/graphite && python manage.py syncdb 
+
+# without input:
+# cd /opt/graphite/webapp/graphite && python manage.py syncdb --noinput
+
 # set permissions
+chown www-data:www-data /mnt/ramdisk/graphite
 chown -R www-data:www-data /opt/graphite/storage
 
 # enable mod_wsgi
