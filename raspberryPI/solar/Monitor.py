@@ -45,11 +45,12 @@ class Monitor:
             sock.connect((self.CARBON_SERVER,
                           self.CARBON_PORT))
         except:
-            raise OSError(
+            self.warn(
                 "Couldn't connect to %(server)s on port %(port)d, "
                 "is carbon running?" %
                 {'server': self.CARBON_SERVER,
                  'port': self.CARBON_PORT})
+            return
 
         now = int(time.time())
         lines = ["%s %s %d" % (sensor, value, now) for 

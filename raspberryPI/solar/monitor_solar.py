@@ -16,28 +16,7 @@ import socket
 import re
 import struct
 
-##########################################################################
-##########################################################################
-##########################################################################
-##########################################################################
-RANGES = {'voltage': (0, 500),
-          'current': (0, 100),
-          'power': (0, 4000),
-          'frequency': (0, 100),
-          'temperature': (-50, 200),
-          'energy': (0, 10000000)}
-
-DAILY_PROFILES = ('voltage_1', 'voltage_2',
-                  'current_1', 'current_2',
-                  'power_1', 'power_2',
-                  'power_total')
-
-DAILY_ENERGY = ('energy_total', 'energy_daily')
-DAILY_GRID = ('temperature_intern',
-              'frequency_grid',
-              'voltage_grid',
-              'current_grid')
-
+HEART_BEAT = 10
 
 #####################################################
 # Send UDP broadcast packets
@@ -142,25 +121,25 @@ class Result:
 
     def items(self):
         return (
-            ("SolarInternalTemperature",
+            ("Solar.InternalTemperature",
              self.internal_temperature),
-            ("SolarVoltage1", self.voltage1),
-            ("SolarVoltage2", self.voltage2),
-            ("SolarCurrent1", self.current1),
-            ("SolarCurrent2", self.current2),
-            ("SolarPower1", self.power1),
-            ("SolarPower2", self.power2),
-            ("SolarGridFrequency",
+            ("Solar.Voltage.West", self.voltage1),
+            ("Solar.Voltage.East", self.voltage2),
+            ("Solar.Current.West", self.current1),
+            ("Solar.Current.East", self.current2),
+            ("Solar.Power.West", self.power1),
+            ("Solar.Power.East", self.power2),
+            ("Solar.Grid.Frequency",
              self.grid_frequency),
-            ("SolarGridCurrent",
+            ("Solar.Grid.Current",
              self.grid_current),
-            ("SolarGridVoltage",
+            ("Solar.Grid.Voltage",
              self.grid_voltage),
-            ("SolarPowerTotal",
+            ("Solar.Power.Total",
              self.power_total),
-            ("SolarEnergyToday",
+            ("Solar.Energy.Today",
              self.energy_today),
-            ("SolarEnergyTotal",
+            ("Solar.Energy.Total",
              self.energy_total))
 
 
@@ -290,7 +269,7 @@ handler = logging.FileHandler("/mnt/ramdisk/solar.log")
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
-app = App(logger=logger, heart_beat=10)
+app = App(logger=logger, heart_beat=HEART_BEAT)
 
 daemon_runner = runner.DaemonRunner(app)
 # This ensures that the logger file handle does not get closed during

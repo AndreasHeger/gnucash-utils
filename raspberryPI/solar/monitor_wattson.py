@@ -11,6 +11,8 @@ import re
 from daemon import runner
 from Monitor import Monitor
 
+HEART_BEAT = 1
+
 
 class App(Monitor):
 
@@ -114,19 +116,20 @@ class App(Monitor):
             "status: grid=%s, solar=%s" %
             (grid_status, solar_status))
 
-        values = {'WattsonGridPower': grid_power,
-                  'WattsonSolarPower': solar_power}
+        values = {'Wattson.Power.Grid': grid_power,
+                  'Wattson.Power.Solar': solar_power}
 
         return values
 
 logger = logging.getLogger("DaemonLog")
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 formatter = logging.Formatter(
     "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 handler = logging.FileHandler("/mnt/ramdisk/wattson.log")
 handler.setFormatter(formatter)
 logger.addHandler(handler)
-app = App(logger=logger, heart_beat=1)
+app = App(logger=logger, heart_beat=HEART_BEAT)
+
 # app.run()
 
 daemon_runner = runner.DaemonRunner(app)

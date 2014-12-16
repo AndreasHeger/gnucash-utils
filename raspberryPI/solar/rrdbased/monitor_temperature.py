@@ -84,7 +84,11 @@ MAX_TEMPERATURE = 100
 
 CACHE = {}
 
-HEART_BEAT = 60
+# set heart-beat
+HEART_BEAT = 10
+
+CARBON_SERVER = '192.168.0.51'
+CARBON_PORT = 2003
 
 # aggregates
 SHORT_TERM_DAYS = 7
@@ -122,11 +126,6 @@ class App():
 
         # open tcp connection
         self.connection = None
-
-        # rrd database names to store data into
-        self.rrd_directory = "/mnt/ramdisk"
-        self.rrd_temperature = os.path.join(
-            self.rrd_directory, 'temperature.rrd')
 
         if HOSTNAME == "top-pi":
             self.sensor_group = 0
@@ -195,9 +194,8 @@ class App():
             time.sleep(HEART_BEAT)
 
     def updateDatabase(self, values):
-        '''update rrd database with values'''
-        rrdtool.update(self.rrd_temperature,
-                       "N:" + ":".join(map(str, (values))))
+        '''send data to carbon server'''
+        
 
     def createDatabase(self):
         '''create rrd databases. Existing databases will not be overwritten'''
