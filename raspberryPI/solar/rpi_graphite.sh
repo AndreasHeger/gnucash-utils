@@ -28,24 +28,27 @@ pips ()
     pip install $@
 }
 
-install apache2 \
-python-pip \
-python-cairo \
-python-django \
-python-django-tagging \
-libapache2-mod-wsgi \
-libapache2-mod-python \
-python-twisted \
-python-memcache \
-python-pysqlite2 \
-python-simplejson \
-memcached \
-python-cairo-dev \
-python-ldap \
-erlang-os-mon \
-erlang-snmp \
-rabbitmq-server \
-netcat
+# install apache2 \
+# python-pip \
+# python-cairo \
+# python-django \
+# python-django-tagging \
+# libapache2-mod-wsgi \
+# libapache2-mod-python \
+# python-twisted \
+# python-memcache \
+# python-pysqlite2 \
+# python-simplejson \
+# memcached \
+# python-cairo-dev \
+# python-ldap \
+# erlang-os-mon \
+# erlang-snmp \
+# rabbitmq-server \
+# netcat
+
+# install with pip
+# pips whisper carbon graphite-web
 
 
 # apache2 site conf from web
