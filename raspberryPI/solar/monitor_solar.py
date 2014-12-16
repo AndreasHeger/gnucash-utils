@@ -147,6 +147,7 @@ class App(Monitor):
 
     def __init__(self, *args, **kwargs):
 
+        Monitor.__init__(self, *args, **kwargs)
         # open tcp connection
         self.connection = None
 
