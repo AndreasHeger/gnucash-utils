@@ -137,7 +137,7 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 app = App(logger=logger, heart_beat=HEART_BEAT)
 
-# app.run()
+app.run()
 
 daemon_runner = runner.DaemonRunner(app)
 # This ensures that the logger file handle does not get closed during
