@@ -94,8 +94,12 @@ class App(Monitor):
         if solar_power is None:
             solar_status = "fail"
             solar_power = 0
+        elif len(solar_power) != 4:
+            logger.warning(
+                "malformed grid power: %s" % list(solar_power))
+            solar_status = "fail"
+            solar_power = 0
         else:
-            assert len(solar_power) == 4
             solar_power = int(solar_power, 16)
 
         # get current energy usage in watts
@@ -103,9 +107,12 @@ class App(Monitor):
         if grid_power is None:
             grid_status = "fail"
             grid_power = 0
+        elif len(grid_power) != 4:
+            logger.warning(
+                "malformed grid power: %s" % list(grid_power))
+            grid_status = "fail"
+            grid_power = None
         else:
-            assert len(grid_power) == 4, \
-                "malformed grid power: %s" % list(grid_power)
             grid_power = int(grid_power, 16)
 
         self.logger.debug(
