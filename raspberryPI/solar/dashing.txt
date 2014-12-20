@@ -1,0 +1,30 @@
+# https://github.com/mivok/squirrelpouch/wiki/dashing-pi
+
+sudo apt-get install ruby ruby-dev
+# yum install ruby ruby-devel nodejs
+
+# https://github.com/nathanjohnson320/node_arm
+sudo dpkg -i node_latest_armhf.deb
+
+# Check installation
+node -v
+
+echo 'gem: --no-rdoc --no-ri' >> ~/.gemrc
+sudo gem install bundler dashing --no-rdoc --no-ri 
+
+dashing new dashboard
+cd dashboard
+bundle
+dashing start
+
+# follow instructions
+# http://thomasvm.github.io/blog/2012/11/19/bling-dashboards-using-graphite-and-dashing/
+
+# create lib/graphite.rb
+
+# add to Gemfile:
+gem 'rest-client'
+gem 'json'
+
+
+
