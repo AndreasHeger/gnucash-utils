@@ -16,6 +16,8 @@ HEART_BEAT = 1
 
 class App(Monitor):
 
+    label = "wattson"
+
     def __init__(self, *args, **kwargs):
         
         Monitor.__init__(self, *args, **kwargs)
@@ -136,8 +138,6 @@ handler = logging.FileHandler("/mnt/ramdisk/wattson.log")
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 app = App(logger=logger, heart_beat=HEART_BEAT)
-
-app.run()
 
 daemon_runner = runner.DaemonRunner(app)
 # This ensures that the logger file handle does not get closed during

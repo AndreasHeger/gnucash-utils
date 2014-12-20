@@ -145,6 +145,8 @@ class Result:
 
 class App(Monitor):
 
+    label = "solar"
+
     def __init__(self, *args, **kwargs):
 
         Monitor.__init__(self, *args, **kwargs)

@@ -85,6 +85,8 @@ HEART_BEAT = 10
 
 class App(Monitor):
 
+    label = "temperature"
+
     def __init__(self, *args, **kwargs):
         Monitor.__init__(self, *args, **kwargs)
 

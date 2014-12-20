@@ -8,12 +8,18 @@ class Monitor:
     CARBON_SERVER = '192.168.0.51'
     CARBON_PORT = 2003
 
+    label = None
+
     def __init__(self, logger, heart_beat=10):
+
+        if self.label is None:
+            raise NotImplementedError("derived class must set label")
+
         self.stdin_path = '/dev/null'
         # tty not available for a spice
         self.stdout_path = '/dev/null'
         self.stderr_path = '/dev/null'
-        self.pidfile_path = '/mnt/ramdisk/temperature_daemon.pid'
+        self.pidfile_path = '/mnt/ramdisk/%s_daemon.pid' % self.label
         self.pidfile_timeout = 5
         self.logger = logger
         self.heart_beat = heart_beat
@@ -22,6 +28,8 @@ class Monitor:
         self.connection = None
 
     def run(self):
+
+        self.logger.debug("entered Monitor.run()")
         self.setup()
 
         self.logger.info(
