@@ -274,13 +274,11 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 
 app = App(logger=logger, heart_beat=HEART_BEAT)
+app.run()
 
 daemon_runner = runner.DaemonRunner(app)
 # This ensures that the logger file handle does not get closed during
 # daemonization
 daemon_runner.daemon_context.files_preserve = [handler.stream]
-try:
-    daemon_runner.do_action()
-except Exception, msg:
-    logging.error("unexpected error: %s" % str(sys.exc_info()[0]))
+daemon_runner.do_action()
 
