@@ -3,6 +3,7 @@
 # http://www.gavinj.net/2012/06/building-python-daemon-process.html
 
 import os
+import sys
 import time
 import logging
 
@@ -265,7 +266,7 @@ class App(Monitor):
             self.connection.close()
 
 logger = logging.getLogger("DaemonLog")
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter(
     "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 handler = logging.FileHandler("/mnt/ramdisk/solar.log")
@@ -278,4 +279,8 @@ daemon_runner = runner.DaemonRunner(app)
 # This ensures that the logger file handle does not get closed during
 # daemonization
 daemon_runner.daemon_context.files_preserve = [handler.stream]
-daemon_runner.do_action()
+try:
+    daemon_runner.do_action()
+except Exception, msg:
+    logging.error("unexpected error: %s" % str(sys.exc_info()[0]))
+
