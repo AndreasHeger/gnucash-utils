@@ -29,7 +29,7 @@ set -e
 NAME=dashing
 DASHING_DIR=/mnt/ramdisk/dashboard/
 DAEMON=/usr/local/bin/dashing
-DASHING_USER=pi
+DASHING_USER=www-data
 PIDFILE="$DASHING_DIR/$NAME.pid"
 DAEMON_OPTS="start -d -P $PIDFILE"
 GEM_HOME=/var/lib/gems/1.9.1
