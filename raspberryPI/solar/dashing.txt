@@ -4,6 +4,7 @@ sudo apt-get install ruby ruby-dev
 # yum install ruby ruby-devel nodejs
 
 # https://github.com/nathanjohnson320/node_arm
+wget http://node-arm.herokuapp.com/node_latest_armhf.deb
 sudo dpkg -i node_latest_armhf.deb
 
 # Check installation
@@ -14,7 +15,17 @@ sudo gem install bundler dashing --no-rdoc --no-ri
 
 dashing new dashboard
 cd dashboard
+# Install graphite extension
+dashing install 5088efcc94de2fecad5e
+
+# add to Gemfile:
+gem 'rest-client'
+gem 'json'
+
+# reconfigure
 bundle
+
+# start up
 dashing start
 
 # follow instructions
@@ -22,9 +33,6 @@ dashing start
 
 # create lib/graphite.rb
 
-# add to Gemfile:
-gem 'rest-client'
-gem 'json'
 
 
 

@@ -118,7 +118,6 @@ ln -fs /mnt/ramdisk /var/www/images
 # sudo rename 's/S01/S90/' /etc/rc*.d/S*monito*
 
 ##########################################################
-# Turned off because of RO
 #
 echo "Setting up ramdisk backup"
 mkdir /var/ramdisk-backup
@@ -133,4 +132,12 @@ echo "@daily  /etc/init.d/ramdisk sync >> /dev/null 2>&1" | crontab
 
 # If apache does not start up, 
 # make sure /var/log/apache2 exists
+
+##########################################################
+#
+echo "Setting up dashing"
+cp dashing.sh /etc/init.d/dashing
+chmod 755 /etc/init.d/dashing
+chown root:root /etc/init.d/dashing
+
 
