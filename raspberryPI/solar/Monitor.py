@@ -53,7 +53,7 @@ class Monitor:
             sock.connect((self.CARBON_SERVER,
                           self.CARBON_PORT))
         except:
-            self.warn(
+            self.logger.warn(
                 "Couldn't connect to %(server)s on port %(port)d, "
                 "is carbon running?" %
                 {'server': self.CARBON_SERVER,
