@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 
 # http://www.gavinj.net/2012/06/building-python-daemon-process.html
+# Inspired by:
+# http://pikarinen.com/rrdwattsond/
+# https://github.com/sapg/openwattson
+# See also: http://wattsonexplorer.sourceforge.net/
 
 import time
 import logging
