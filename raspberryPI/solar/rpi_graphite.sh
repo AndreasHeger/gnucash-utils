@@ -63,11 +63,11 @@ echo "Listen 8080" >> /etc/apache2/sites-available/graphite
 if [ ! -d /mnt/ramdisk/graphite ] ; then 
     mkdir /mnt/ramdisk/graphite
     mv /opt/graphite/storage /mnt/ramdisk/graphite
-    ln -s /mnt/ramdisk/graphit/storage /opt/graphite/storage
+    ln -s /mnt/ramdisk/graphite/storage /opt/graphite/storage
 fi
 
 # copy configuration files
-cp graphite/*.conf /opt/graphite/conf
+cp graphite/*.{conf,wsgi} /opt/graphite/conf
 
 # because docs say so
 mkdir -p /etc/httpd/wsgi/
@@ -95,3 +95,10 @@ a2ensite graphite
 
 # restart apache2
 service apache2 reload
+
+cat <<EOC | crontab
+SHELL=/bin/bash
+# remove log files from ramdisk
+# run 30 minutes after 2 am, every day
+30 2 * * *    (sudo find /mnt/ramdisk/graphite/storage/log -name "*.log.*" -exec rm -f {} \; > dev/null)
+EOC
