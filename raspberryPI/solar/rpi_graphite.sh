@@ -78,9 +78,11 @@ cp graphite/local_settings.py /opt/graphite/webapp/graphite/local_settings.py
 
 # SyncDB - requires interaction
 # work around a bug in django
+SAVE_LC_ALL=$LC_ALL
 export LC_ALL="en_US.UTF-8"
-cd /opt/graphite/webapp/graphite && python manage.py syncdb --noinput
+(cd /opt/graphite/webapp/graphite && python manage.py syncdb --noinput)
 # cd /opt/graphite/webapp/graphite && python manage.py syncdb 
+export LC_ALL=$SAVE_LC_ALL
 
 # set permissions
 chown www-data:www-data /mnt/ramdisk/graphite
