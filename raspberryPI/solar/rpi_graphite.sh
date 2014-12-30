@@ -44,8 +44,9 @@ python-cairo-dev \
 python-ldap \
 erlang-os-mon \
 erlang-snmp \
-rabbitmq-server \
 netcat
+
+# rabbitmq-server
 
 # install with pip
 pips whisper carbon graphite-web

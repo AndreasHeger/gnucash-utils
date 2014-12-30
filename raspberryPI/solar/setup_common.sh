@@ -5,7 +5,8 @@
 apt-get -y update
 apt-get -y upgrade
 
-apt-get -y remove --purge wolfram-engine triggerhappy
+apt-get -y remove --purge wolfram-engine triggerhappy gmetad
+
 # # Remove X-Server and related stuff:
 apt-get -y remove --purge xserver-common lightdm
 insserv -r x11-common
