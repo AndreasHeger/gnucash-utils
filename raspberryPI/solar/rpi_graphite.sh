@@ -79,10 +79,8 @@ cp graphite/local_settings.py /opt/graphite/webapp/graphite/local_settings.py
 # SyncDB - requires interaction
 # work around a bug in django
 export LC_ALL="en_US.UTF-8"
-cd /opt/graphite/webapp/graphite && python manage.py syncdb 
-
-# without input:
-# cd /opt/graphite/webapp/graphite && python manage.py syncdb --noinput
+cd /opt/graphite/webapp/graphite && python manage.py syncdb --noinput
+# cd /opt/graphite/webapp/graphite && python manage.py syncdb 
 
 # set permissions
 chown www-data:www-data /mnt/ramdisk/graphite
@@ -103,3 +101,8 @@ SHELL=/bin/bash
 # run 30 minutes after 2 am, every day
 30 2 * * *    (sudo find /mnt/ramdisk/graphite/storage/log -name "*.log.*" -exec rm -f {} \; > dev/null)
 EOC
+
+echo "setting up graphite init script"
+cp carbon-cache.sh /etc/init.d/carbon-cache
+chmod 755 /etc/init.d/carbon-cache
+chown root:root /etc/init.d/carbon-cache
