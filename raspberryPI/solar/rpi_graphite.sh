@@ -51,7 +51,6 @@ netcat
 # install with pip
 pips whisper carbon graphite-web
 
-
 # apache2 site conf from web
 rm -f /etc/apache2/sites-available/graphite
 wget https://raw.github.com/tmm1/graphite/master/examples/example-graphite-vhost.conf -O /etc/apache2/sites-available/graphite
@@ -71,6 +70,7 @@ fi
 cp graphite/*.{conf,wsgi} /opt/graphite/conf
 
 # needs to exist for creating sockets - link to ramdisk
+# to circumvent read-only file system
 rm -rf /etc/httpd/wsgi
 mkdir -p /etc/httpd
 ln -s /mnt/ramdisk/wsgi /etc/httpd/wsgi
@@ -78,8 +78,8 @@ ln -s /mnt/ramdisk/wsgi /etc/httpd/wsgi
 #Local settings from example
 cp graphite/local_settings.py /opt/graphite/webapp/graphite/local_settings.py
 
-# SyncDB - requires interaction
-# work around a bug in django
+# sync_db - creates tables and users
+# work around a bug in django, en_UK.UTF-8 causes error
 SAVE_LC_ALL=$LC_ALL
 export LC_ALL="en_US.UTF-8"
 (cd /opt/graphite/webapp/graphite && python manage.py syncdb --noinput)
