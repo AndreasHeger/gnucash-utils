@@ -70,8 +70,10 @@ fi
 # copy configuration files
 cp graphite/*.{conf,wsgi} /opt/graphite/conf
 
-# because docs say so
-mkdir -p /etc/httpd/wsgi/
+# needs to exist for creating sockets - link to ramdisk
+rm -rf /etc/httpd/wsgi
+mkdir -p /etc/httpd
+ln -s /mnt/ramdisk/wsgi /etc/httpd/wsgi
 
 #Local settings from example
 cp graphite/local_settings.py /opt/graphite/webapp/graphite/local_settings.py
@@ -85,7 +87,7 @@ export LC_ALL="en_US.UTF-8"
 export LC_ALL=$SAVE_LC_ALL
 
 # set permissions
-chown www-data:www-data /mnt/ramdisk/graphite
+chown -R www-data:www-data /mnt/ramdisk/graphite
 chown -R www-data:www-data /opt/graphite/storage
 
 # enable mod_wsgi
