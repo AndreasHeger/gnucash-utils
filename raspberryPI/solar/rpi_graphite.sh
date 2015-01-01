@@ -99,14 +99,25 @@ a2ensite graphite
 # restart apache2
 service apache2 reload
 
+echo "setting up graphite init script"
+cp carbon-cache.sh /etc/init.d/carbon-cache
+chmod 755 /etc/init.d/carbon-cache
+chown root:root /etc/init.d/carbon-cache
+
+# See: https://swiftstack.com/blog/2012/08/15/old-school-monkeypatching/
+echo "setting up backups"
+git clone https://github.com/smerritt/flockit.git
+cd flockit
+make
+
+
 cat <<EOC | crontab
 SHELL=/bin/bash
 # remove log files from ramdisk
 # run 30 minutes after 2 am, every day
 30 2 * * *    (sudo find /mnt/ramdisk/graphite/storage/log -name "*.log.*" -exec rm -f {} \; > dev/null)
+30 1 * * *    (sudo /home/pi/Projects/raspberryPI/solar/graphite_backup.sh >> /mnt/ramdisk/backup.log 2>&1)
 EOC
 
-echo "setting up graphite init script"
-cp carbon-cache.sh /etc/init.d/carbon-cache
-chmod 755 /etc/init.d/carbon-cache
-chown root:root /etc/init.d/carbon-cache
+
+

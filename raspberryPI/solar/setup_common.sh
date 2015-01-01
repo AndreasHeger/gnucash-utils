@@ -24,6 +24,7 @@ if [ ! -e /etc/default/rcS.orig ]; then
 fi
 
 mkdir /mnt/ramdisk
+mkdir /mnt/diskstation
 
 # create fstab
 if [ ! -e /etc/fstab.orig ] ; then
@@ -141,7 +142,3 @@ echo "@daily  /etc/init.d/ramdisk sync >> /dev/null 2>&1" | crontab
 # chmod 755 /etc/init.d/dashing
 # chown root:root /etc/init.d/dashing
 
-# echo "Setting up graphite init script"
-# cp carbon-cache.sh /etc/init.d/carbon-cache
-# chmod 755 /etc/init.d/carbon-cache
-# chown root:root /etc/init.d/carbon-cache
