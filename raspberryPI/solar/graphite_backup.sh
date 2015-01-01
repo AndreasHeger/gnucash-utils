@@ -12,7 +12,7 @@ backup_dir=/mnt/diskstation/graphite
 echo "mounting diskstation"
 mount /mnt/diskstation
 
-env LD_PRELOAD=/home/pi/libflockit.so FLOCKIT_FILE_PREFIX=${local_dir} rsync -rzt -i ${local_dir} ${backup_dir}
+env LD_PRELOAD=/home/pi/flockit/libflockit.so FLOCKIT_FILE_PREFIX=${local_dir} rsync -rzt -i ${local_dir} ${backup_dir}
 
 echo "unmounting diskstation"
 umount /mnt/diskstation
