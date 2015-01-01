@@ -115,8 +115,8 @@ cat <<EOC | crontab
 SHELL=/bin/bash
 # remove log files from ramdisk
 # run 30 minutes after 2 am, every day
-30 2 * * *    (sudo find /mnt/ramdisk/graphite/storage/log -name "*.log.*" -exec rm -f {} \; > dev/null)
-30 1 * * *    (sudo /home/pi/Projects/raspberryPI/solar/graphite_backup.sh >> /mnt/ramdisk/backup.log 2>&1)
+30 2 * * *    sudo sh -c "/mnt/ramdisk/graphite/storage/log -name \"*.log.*\" -exec rm -f {} \; > dev/null"
+30 1 * * *    sudo sh -c "/home/pi/Projects/raspberryPI/solar/graphite_backup.sh >> /mnt/ramdisk/backup.log 2>&1"
 EOC
 
 
