@@ -21,9 +21,20 @@ dashing install 5088efcc94de2fecad5e
 # add to Gemfile:
 gem 'rest-client'
 gem 'json'
+gem 'dashing-contrib', '~> 0.1.6'
 
 # reconfigure
 bundle
+
+# for dashing-contrib (https://github.com/QubitProducts/dashing-contrib)
+# Add the following to the top of contig.ru
+require 'dashing-contrib'
+require 'dashing'
+DashingContrib.configure
+
+# Add to assets/javascripts/application.coffee
+#= require dashing-contrib/assets/widgets
+
 
 # start up
 dashing start
@@ -32,6 +43,10 @@ dashing start
 # http://thomasvm.github.io/blog/2012/11/19/bling-dashboards-using-graphite-and-dashing/
 
 # create lib/graphite.rb
+
+
+# creating new widgets:
+dashing create widget XYZ
 
 
 
