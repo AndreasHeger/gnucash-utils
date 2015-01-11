@@ -18,7 +18,7 @@ update-rc.d carbon-cache defaults 80
 echo "activating dashing"
 update-rc.d dashing defaults 80
 
-echo "setting up mirroring"
+# echo "setting up mirroring"
 # setup mirroring
 # Note: you need to setup passwordless ssh beforehand
 # by running:
@@ -29,9 +29,6 @@ echo "setting up mirroring"
 # scp -i .ssh/pi_rsa .ssh/pi_rsa pi@192.168.0.57:.ssh/
 # scp -i .ssh/pi_rsa .ssh/pi_rsa pi@192.168.0.59:.ssh/
 
-
-
-# echo "setting up mirroring"
 # apt-get install sqlite3 python-lxml
 # cd
 # mkdir mirror
