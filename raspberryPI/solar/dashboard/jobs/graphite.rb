@@ -79,8 +79,9 @@ class Graphite
         v = (datapoints.select { |el| not el[0].nil? })
         # puts "name=#{name} #{datapoints.length} #{v}"
 
-        value = (datapoints.select { |el| not el[0].nil? }).last[0].sigfig_to_s(2)
-
+        # value = (datapoints.select { |el| not el[0].nil? }).last[0].sigfig_to_s(3)
+        # puts "name=#{name} #{datapoints.length} #{v} #{value}"
+        value = (datapoints.select { |el| not el[0].nil? }).last[0]
         return points, value
     end
 
@@ -93,7 +94,6 @@ class Graphite
         since ||= '-10min'
         stats = query name, since
         last = (stats[:datapoints].select { |el| not el[0].nil? }).last[0].sigfig_to_s(2)
-
         return last
     end
 end
@@ -101,6 +101,11 @@ end
 job_mapping.each do |title, dd|
   statname = dd[0]
   interval = dd[1]
+    
+  # dictionary with last values, can this be
+  # attached to the job?
+  last_values = {}
+
   SCHEDULER.every interval, :first_in => 0 do |job|
     # create an instance of our Graphite class
     q = Graphite.new GRAPHITE_HOST, GRAPHITE_PORT
@@ -108,17 +113,18 @@ job_mapping.each do |title, dd|
     # get the current points and value. Timespan is static set at 1 hour.
     points, current = q.points "#{statname}", "-1hour"
 
-    job.last = current if !defined?(job.last)
+    last_values[title] ||= current
+
     # send to dashboard, supports for number (current, last), meter (value)
     # and graph widgets (points)
-    send_event "#{title}", { 
-      current: current,
-      value: current,
-      last: job.last,
-      points: points }
+    send_event("#{title}", { 
+                 current: current.sigfig_to_s(2),
+                 value: current,
+                 last: last_values[title],
+                 points: points })
 
-      job.last = current
-    end
+    last_values[title] = current
+  end
 end
 
 # job_mapping.each do |title, statname|
