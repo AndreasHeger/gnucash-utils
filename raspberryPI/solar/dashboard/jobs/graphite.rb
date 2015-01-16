@@ -36,7 +36,6 @@ job_mapping = {
 }
 
 
-
 # Extend the float to allow better rounding. Too many digits makes a messy dashboard
 class Float
     def sigfig_to_s(digits)
@@ -70,24 +69,15 @@ class Graphite
 
         points = []
         count = 1
-
         (datapoints.select { |el| not el[0].nil? }).each do|item|
-            points << { x: count, y: get_value(item)}
+            points << {x: item[1], y: item[0] || 0}
             count += 1
         end
 
-        v = (datapoints.select { |el| not el[0].nil? })
-        # puts "name=#{name} #{datapoints.length} #{v}"
+        # get value (not-rounded)
+        value = points.last[:y]
 
-        # value = (datapoints.select { |el| not el[0].nil? }).last[0].sigfig_to_s(3)
-        # puts "name=#{name} #{datapoints.length} #{v} #{value}"
-        value = (datapoints.select { |el| not el[0].nil? }).last[0]
         return points, value
-    end
-
-    def get_value(datapoint)
-        value = datapoint[0] || 0
-        return value.round(2)
     end
 
     def value(name, since=nil)
