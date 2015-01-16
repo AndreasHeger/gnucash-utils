@@ -137,8 +137,8 @@ echo "@daily  /etc/init.d/ramdisk sync >> /dev/null 2>&1" | crontab
 
 ##########################################################
 #
-# echo "Setting up dashing init script"
-# cp dashing.sh /etc/init.d/dashing
-# chmod 755 /etc/init.d/dashing
-# chown root:root /etc/init.d/dashing
+echo "Setting up dashing init script"
+cp dashing.sh /etc/init.d/dashing
+chmod 755 /etc/init.d/dashing
+chown root:root /etc/init.d/dashing
 
