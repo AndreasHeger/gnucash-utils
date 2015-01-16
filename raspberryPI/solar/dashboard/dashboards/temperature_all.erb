@@ -2,6 +2,15 @@
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
+<script type='text/javascript'>
+$(function() {
+  // These settings override the defaults set in application.coffee. You can do this on a per dashboard basis.
+  Dashing.numColumns = 5
+  $('.gridster').disable()
+
+});
+</script>
+
 <style type='text/css'>
 #dc-switcher-next { padding-left: 5px; }
 #dc-switcher-next-name, #dc-switcher-countdown { color: #ddd; }
