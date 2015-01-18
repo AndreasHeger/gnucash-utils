@@ -23,7 +23,7 @@ job_mapping = {
     'GroundFloorBackDoor' => ['Temperature.GroundFloor.BackDoor', '30s'],
     'GroundFloorBackWindow' => ['Temperature.GroundFloor.BackWindow', '30s'],
     'HallwayTop' =>  ['Temperature.Hallway.Top', '30s'],
-    'Hallway Bottom' => ['Temperature.Hallway.Bottom', '30s'],
+    'HallwayBottom' => ['Temperature.Hallway.Bottom', '30s'],
     'LivingRoomCupBoard' => ['Temperature.LivingRoom.CupBoard', '30s'],
     'LivingRoomWindow' => ['Temperature.LivingRoom.Window', '30s'],
     'LandingTop' => ['Temperature.Landing.Top', '30s'],
@@ -108,7 +108,7 @@ job_mapping.each do |title, dd|
     # send to dashboard, supports for number (current, last), meter (value)
     # and graph widgets (points)
     send_event("#{title}", { 
-                 current: current.sigfig_to_s(2),
+                 current: current.sigfig_to_s(3),
                  value: current,
                  last: last_values[title],
                  points: points })
