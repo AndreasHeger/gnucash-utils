@@ -174,27 +174,29 @@ def filterAccounts( results,
     *ignore* is an optional set of acount names to ignore.
     '''
     for child in root_account.get_children():
-        child = gnucash.Account(instance=child)
-        if ignore and child.GetName() in ignore: continue
+        # child = gnucash.Account(instance=child)
+        if ignore and child.GetName() in ignore:
+            continue
         for criterion in criteria:
-            if criterion( child, level ):
-                results.append( child )
+            if criterion(child, level):
+                results.append(child)
                 break
         else:
             filterAccounts( results, child, criteria, ignore, level + 1 )
 
     return results
 
-def accumulateAccount( account_of_interest, 
-                       period_list,
-                       max_transaction = 0):
+
+def accumulateAccount(account_of_interest,
+                      period_list,
+                      max_transaction=0):
     '''accumulate transactions for account.
 
     Ignore transaction above max_transaction size
     '''             
 
     # a copy of the above list with just the period start dates
-    period_starts = [e[0] for e in period_list ]
+    period_starts = [e[0] for e in period_list]
 
     # insert and add all splits in the periods of interest
     for split in account_of_interest.GetSplitList():
@@ -203,8 +205,8 @@ def accumulateAccount( account_of_interest,
 
         # use binary search to find the period that starts before or on
         # the transaction date
-        period_index = bisect_right( period_starts, trans_date ) - 1
-        
+        period_index = bisect_right(period_starts, trans_date) - 1
+
         # ignore transactions with a date before the matching period start
         # (after subtracting 1 above start_index would be -1)
         # and after the last period_end
@@ -222,7 +224,7 @@ def accumulateAccount( account_of_interest,
             # in other words, we assert our use of binary search
             # and the filtered results from the above if provide all the
             # protection we need
-            assert( trans_date>= period[0] and trans_date <= period[1] )
+            assert(trans_date>= period[0] and trans_date <= period[1])
             
             split_amount = gnc_numeric_to_python_Decimal(split.GetAmount())
 
@@ -246,15 +248,15 @@ def accumulateAccount( account_of_interest,
             # to get in the right bucket
             period[4+debit_credit_offset] += split_amount
 
-def accumulateAccountWithChildren( account_of_interest, 
-                                   period_list,
-                                   max_transaction = 0):
+def accumulateAccountWithChildren(account_of_interest,
+                                  period_list,
+                                  max_transaction=0):
     '''accumulate credits and debits from account
     including child accounts.'''
-    accumulateAccount( account_of_interest, period_list, max_transaction )
+    accumulateAccount(account_of_interest, period_list, max_transaction)
     for child in account_of_interest.get_children():
-        child = gnucash.Account(instance=child)
         accumulateAccountWithChildren( child, period_list, max_transaction )
+
 
 def buildPeriodList( start_year, start_month, period_type, periods ):
     '''return a list of all the periods of interest, for each period
