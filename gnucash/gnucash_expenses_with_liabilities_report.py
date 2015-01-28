@@ -81,13 +81,14 @@ import Experiment as E
 # kind of period as the value
 PERIODS = {"monthly": 1,
            "quarterly": 3,
-           "yearly": 12 }
+           "yearly": 12}
 
 NUM_MONTHS = 12
 ONE_DAY = timedelta(days=1)
 ZERO = Decimal(0)
 
 DEBITS_SHOW, CREDITS_SHOW = ("debits-show", "credits-show")
+
 
 def gnc_numeric_to_python_Decimal(numeric):
     negative = numeric.negative_p()
@@ -99,15 +100,15 @@ def gnc_numeric_to_python_Decimal(numeric):
     result = copy.to_decimal(None)
     if not result:
         raise Exception("gnc numeric value %s can't be converted to deciaml" %
-                        copy.to_string() )
-    digit_tuple = tuple( int(char)
-                         for char in str(copy.num())
-                         if char != '-' )
+                        copy.to_string())
+    digit_tuple = tuple(int(char)
+                        for char in str(copy.num())
+                        if char != '-')
     denominator = copy.denom()
     exponent = int(log10(denominator))
-    assert( (10 ** exponent) == denominator )
-    return Decimal( (sign, digit_tuple, -exponent) )
-    
+    assert((10 ** exponent) == denominator)
+    return Decimal((sign, digit_tuple, -exponent))
+
 
 def next_period_start(start_year, start_month, period_type):
     # add numbers of months for the period length
@@ -123,16 +124,16 @@ def next_period_start(start_year, start_month, period_type):
     #
     # A the super nice thing is that you can add all kinds of period lengths
     # to PERIODS
-    end_year = start_year + ( (end_month-1) / NUM_MONTHS )
-    end_month = ( (end_month-1) % NUM_MONTHS ) + 1
+    end_year = start_year + ((end_month - 1) / NUM_MONTHS)
+    end_month = ((end_month - 1) % NUM_MONTHS) + 1
 
     return end_year, end_month
-    
+
 
 def period_end(start_year, start_month, period_type):
     if period_type not in PERIODS:
         raise Exception("%s is not a valid period, should be %s" % (
-                period_type, str(PERIODS.keys()) ) )
+            period_type, str(PERIODS.keys())))
 
     end_year, end_month = next_period_start(start_year, start_month,
                                             period_type)
@@ -141,33 +142,36 @@ def period_end(start_year, start_month, period_type):
     # so we get a period end like
     # 2010-03-31 for period starting 2010-01 instead of 2010-04-01
     return date(end_year, end_month, 1) - ONE_DAY
-    
+
 
 def generate_period_boundaries(start_year, start_month, period_type, periods):
     for i in xrange(periods):
-        yield ( date(start_year, start_month, 1),
-                period_end(start_year, start_month, period_type) )
+        yield (date(start_year, start_month, 1),
+               period_end(start_year, start_month, period_type))
         start_year, start_month = next_period_start(start_year, start_month,
                                                     period_type)
 
+
 def account_from_path(top_account, account_path, original_path=None):
     '''account path is list of account names (branch in account tree).'''
-    if original_path==None: original_path = account_path
+    if original_path == None:
+        original_path = account_path
     account, account_path = account_path[0], account_path[1:]
     account = top_account.lookup_by_name(account)
     if account.get_instance() == None:
         raise Exception(
             "path " + ''.join(original_path) + " could not be found")
-    if len(account_path) > 0 :
+    if len(account_path) > 0:
         return account_from_path(account, account_path, original_path)
     else:
         return account
 
-def filterAccounts( results, 
-                    root_account, 
-                    criteria,
-                    ignore = None,
-                    level = 0 ):
+
+def filterAccounts(results,
+                   root_account,
+                   criteria,
+                   ignore=None,
+                   level=0):
     '''walk over account hierarchy starting at *root_account* and 
     return accounts matching a list of *criteria* in *results*.
 
@@ -182,7 +186,7 @@ def filterAccounts( results,
                 results.append(child)
                 break
         else:
-            filterAccounts( results, child, criteria, ignore, level + 1 )
+            filterAccounts(results, child, criteria, ignore, level + 1)
 
     return results
 
@@ -193,7 +197,7 @@ def accumulateAccount(account_of_interest,
     '''accumulate transactions for account.
 
     Ignore transaction above max_transaction size
-    '''             
+    '''
 
     # a copy of the above list with just the period start dates
     period_starts = [e[0] for e in period_list]
@@ -211,7 +215,7 @@ def accumulateAccount(account_of_interest,
         # (after subtracting 1 above start_index would be -1)
         # and after the last period_end
         if period_index >= 0 and \
-                trans_date <= period_list[len(period_list)-1][1]:
+                trans_date <= period_list[len(period_list) - 1][1]:
 
             # get the period bucket appropriate for the split in question
             period = period_list[period_index]
@@ -224,8 +228,8 @@ def accumulateAccount(account_of_interest,
             # in other words, we assert our use of binary search
             # and the filtered results from the above if provide all the
             # protection we need
-            assert(trans_date>= period[0] and trans_date <= period[1])
-            
+            assert(trans_date >= period[0] and trans_date <= period[1])
+
             split_amount = gnc_numeric_to_python_Decimal(split.GetAmount())
 
             # if the amount is negative, this is a credit
@@ -235,18 +239,19 @@ def accumulateAccount(account_of_interest,
             else:
                 debit_credit_offset = 0
 
-            if max_transaction and abs( split_amount ) > max_transaction:
+            if max_transaction and abs(split_amount) > max_transaction:
                 continue
 
             # store the debit or credit Split with its transaction, using the
             # above offset to get in the right bucket
             #
             # if we wanted to be really cool we'd keep the transactions
-            period[2+debit_credit_offset].append( (trans, split) )
-    
+            period[2 + debit_credit_offset].append((trans, split))
+
             # add the debit or credit to the sum, using the above offset
             # to get in the right bucket
-            period[4+debit_credit_offset] += split_amount
+            period[4 + debit_credit_offset] += split_amount
+
 
 def accumulateAccountWithChildren(account_of_interest,
                                   period_list,
@@ -255,106 +260,116 @@ def accumulateAccountWithChildren(account_of_interest,
     including child accounts.'''
     accumulateAccount(account_of_interest, period_list, max_transaction)
     for child in account_of_interest.get_children():
-        accumulateAccountWithChildren( child, period_list, max_transaction )
+        accumulateAccountWithChildren(child, period_list, max_transaction)
 
 
-def buildPeriodList( start_year, start_month, period_type, periods ):
+def buildPeriodList(start_year, start_month, period_type, periods):
     '''return a list of all the periods of interest, for each period
     keep the start date, end date, a list to store debits and credits,
     and sums for tracking the sum of all debits and sum of all credits
     '''
     period_list = [
         [start_date, end_date,
-         [], # debits
-         [], # credits
-         ZERO, # debits sum
-         ZERO, # credits sum
+         [],  # debits
+         [],  # credits
+         ZERO,  # debits sum
+         ZERO,  # credits sum
          ]
         for start_date, end_date in generate_period_boundaries(
             start_year, start_month, period_type, periods)
-        ]
+    ]
 
     return period_list
 
-def outputAccount( period_list, debits_show, credits_show ):
+
+def outputAccount(period_list, debits_show, credits_show):
     '''ouput data to stdout.
-    
+
     For debugging purposes.
     '''
     csv_writer = csv.writer(stdout)
-    csv_writer.writerow( ('period start', 'period end', 'debits', 'credits') )
-    
+    csv_writer.writerow(('period start', 'period end', 'debits', 'credits'))
+
     def generate_detail_rows(values):
         return (
             ('', '', '', '', trans.GetDescription(),
              gnc_numeric_to_python_Decimal(split.GetAmount()))
-            for trans, split in values )
+            for trans, split in values)
 
     for start_date, end_date, debits, credits, debit_sum, credit_sum in \
             period_list:
-        csv_writer.writerow( (start_date, end_date, debit_sum, credit_sum) )
+        csv_writer.writerow((start_date, end_date, debit_sum, credit_sum))
 
         if debits_show and len(debits) > 0:
             csv_writer.writerow(
-                ('DEBITS', '', '', '', 'description', 'value') )
-            csv_writer.writerows( generate_detail_rows(debits) )
-            csv_writer.writerow( () )
+                ('DEBITS', '', '', '', 'description', 'value'))
+            csv_writer.writerows(generate_detail_rows(debits))
+            csv_writer.writerow(())
         if credits_show and len(credits) > 0:
             csv_writer.writerow(
-                ('CREDITS', '', '', '', 'description', 'value') )
-            csv_writer.writerows( generate_detail_rows(credits) )
-            csv_writer.writerow( () )
+                ('CREDITS', '', '', '', 'description', 'value'))
+            csv_writer.writerows(generate_detail_rows(credits))
+            csv_writer.writerow(())
 
-def sumCounts( data ):
+
+def sumCounts(data):
     '''aggregate list of counts.'''
-    sum_values = [ sum(x) for x in zip( *data[1:])]
+    sum_values = [sum(x) for x in zip(*data[1:])]
     return sum_values
+
 
 def main():
 
     parser = E.OptionParser()
 
-    parser.add_option( "-g", "--gnucash-file", dest = "gnucash_file", type="string",
-                       help="gnucash file to use [%default]" )
+    parser.add_option(
+        "-g", "--gnucash-file", dest="gnucash_file", type="string",
+        help="gnucash file to use [%default]")
 
-    parser.add_option( "-y", "--year", dest = "start_year", type="int",
-                       help="year to start counting [%default]" )
+    parser.add_option(
+        "-y", "--year", dest="start_year", type="int",
+        help="year to start counting [%default]")
 
-    parser.add_option( "-n", "--number-of-periods", dest = "periods", type="int",
-                       help="number of periods [%default]" )
+    parser.add_option(
+        "-n", "--number-of-periods", dest="periods", type="int",
+        help="number of periods [%default]")
 
-    parser.add_option( "-a", "--number-of-accounts", dest = "num_accounts", type="int",
-                       help="number of accounts to show [%default]" )
+    parser.add_option(
+        "-a", "--number-of-accounts", dest="num_accounts", type="int",
+        help="number of accounts to show [%default]")
 
-    parser.add_option( "-m", "--month", dest = "start_month", type="int",
-                       help="month to start counting [%default]" )
+    parser.add_option(
+        "-m", "--month", dest="start_month", type="int",
+        help="month to start counting [%default]")
 
-    parser.add_option( "-x", "--max-transaction", dest = "max_transaction", type="float",
-                       help="maximum value of a transaction "
-                       " Use this to filter out large atypical expenses"
-                       " [%default]" )
+    parser.add_option(
+        "-x", "--max-transaction", dest="max_transaction", type="float",
+        help="maximum value of a transaction "
+        " Use this to filter out large atypical expenses"
+        " [%default]")
 
-    parser.add_option( "-p", "--period-type", dest = "period_type", type="choice",
-                       choices = ("monthly", "quarterly", "yearly", ),
-                       help="period type [%default]" )
-    
-    parser.set_defaults( 
-        num_accounts = 10,
-        start_year = 2009,
-        start_month = 1,
-        period_type = "monthly",
-        periods = 36,
-        gnucash_file = "andreas-coop",
-        accounts_to_ignore = ["House Purchase"],
-        max_transaction = 7000,
-        )
+    parser.add_option(
+        "-p", "--period-type", dest="period_type", type="choice",
+        choices=("monthly", "quarterly", "yearly", ),
+        help="period type [%default]")
 
-    options, args = E.Start( parser )
+    parser.set_defaults(
+        num_accounts=10,
+        start_year=2009,
+        start_month=1,
+        period_type="monthly",
+        periods=36,
+        gnucash_file="andreas-coop",
+        accounts_to_ignore=["House Purchase"],
+        max_transaction=100000,
+    )
+
+    options, args = E.Start(parser)
 
     # open - ignore lock as we only read
-    gnucash_session = Session( options.gnucash_file, 
-                               is_new=False,
-                               ignore_lock = True)
+    gnucash_session = Session(options.gnucash_file,
+                              is_new=False,
+                              ignore_lock=True)
 
     root_account = gnucash_session.book.get_root_account()
 
@@ -362,34 +377,34 @@ def main():
 
     # criteria for account selection - combined with OR
     criteria = [
-        lambda a,l: a.GetType() == ACCT_TYPE_EXPENSE and l >= 1,
-        lambda a,l: a.GetName() == "Mortage",
-        ]
+        lambda a, l: a.GetType() == ACCT_TYPE_EXPENSE and l >= 1,
+        lambda a, l: a.GetName() == "Mortage",
+    ]
 
-    filterAccounts( accounts, root_account, 
-                    criteria,
-                    ignore = options.accounts_to_ignore,
-                    )
+    filterAccounts(accounts, root_account,
+                   criteria,
+                   ignore=options.accounts_to_ignore,
+                   )
 
     data = []
 
     for account in accounts:
-        E.debug( "processing %s" % account.GetName() )
-        period_list = buildPeriodList( options.start_year, 
-                                       options.start_month, 
-                                       options.period_type, 
-                                       options.periods )
+        E.debug("processing %s" % account.GetName())
+        period_list = buildPeriodList(options.start_year,
+                                      options.start_month,
+                                      options.period_type,
+                                      options.periods)
 
-        accumulateAccountWithChildren( account, period_list,
-                                       options.max_transaction)
-        
+        accumulateAccountWithChildren(account, period_list,
+                                      options.max_transaction)
+
         # collect balances - debits are positive
         balances = []
         for start_date, end_date, debits, credits, debit_sum, credit_sum in \
                 period_list:
-            balances.append( credit_sum + debit_sum )
-            
-        data.append( (sum(balances), account, balances) )
+            balances.append(credit_sum + debit_sum)
+
+        data.append((sum(balances), account, balances))
 
     # sort data by total ammount
     data.sort()
@@ -401,34 +416,33 @@ def main():
 
     # collect column headers
     headers = [x[1].GetName() for x in data[:options.num_accounts]] + ["other"]
-    
-    options.stdout.write( "start\t%s\n" % "\t".join(headers) )
-    
+
+    options.stdout.write("start\t%s\n" % "\t".join(headers))
+
     # aggregate columns, returns a modified data matrix
-    detail = zip( *[x[2] for x in data[:options.num_accounts]] )
-    other = sumCounts( [x[2] for x in data[options.num_accounts:]] )
-    period_list = buildPeriodList( options.start_year, 
-                                   options.start_month, 
-                                   options.period_type, 
-                                   options.periods )
-        
-    for p, d, o in zip( period_list, detail, other ):
-        options.stdout.write( "\t".join( map(str,
-                                             (p[0], 
-                                              "\t".join(map(str,d)), 
-                                              str(o)))) + "\n" )
+    detail = zip(*[x[2] for x in data[:options.num_accounts]])
+    other = sumCounts([x[2] for x in data[options.num_accounts:]])
+    period_list = buildPeriodList(options.start_year,
+                                  options.start_month,
+                                  options.period_type,
+                                  options.periods)
+
+    for p, d, o in zip(period_list, detail, other):
+        options.stdout.write("\t".join(map(str,
+                                           (p[0],
+                                            "\t".join(map(str, d)),
+                                            str(o)))) + "\n")
 
     E.Stop()
 
     # no save needed, we're just reading..
     # when calling end and no lock, error message appears:
     # * 20:47:09  WARN <gnc.backend> [xml_session_end()] Error on g_unlink(andreas-coop.LCK): 2: No such file or directory
-    # Afraid that this might cause an existing session to 
-    # crash, so the following is disabled: 
+    # Afraid that this might cause an existing session to
+    # crash, so the following is disabled:
     #
     # gnucash_session.end()
 
 
-if __name__ == "__main__": main()
-
-
+if __name__ == "__main__":
+    main()
