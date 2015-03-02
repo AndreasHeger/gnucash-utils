@@ -4,7 +4,7 @@ gem 'dashing'
 gem 'rest-client'
 gem 'json'
 
-gem 'dashing-contrib' # , '~> 0.1.6'
+gem 'dashing-contrib', '~> 0.1.6'
 
 
 ## Remove this if you don't need a twitter widget.

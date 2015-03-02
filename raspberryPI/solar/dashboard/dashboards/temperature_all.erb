@@ -9,23 +9,6 @@ $(function() {
 });
 </script>
 
-<style type='text/css'>
-#dc-switcher-next { padding-left: 5px; }
-#dc-switcher-next-name, #dc-switcher-countdown { color: #ddd; }
-#dc-switcher-pause-reset { padding-left: 5px; }
-#dc-switcher-controls { float: right; margin-right: 10px }
-#dc-switcher-stopper:hover, #dc-switcher-next:hover { cursor: pointer; cursor: hand;}
-.switcher-text { color: white; font-weight: bold }
-</style>
-
-<div id='dc-switcher-controls'>
-  <dashboard-name-template>
-    <span class='switcher-text'>Next:</span>
-    <em>&ensp;$nextName&ensp;</em>
-    <span class='switcher-text'>in&ensp;</span>
-  </dashboard-name-template>
-</div>
-
 <div class="gridster">
   <ul>
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
@@ -50,17 +33,17 @@ $(function() {
     </li>
 
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-      <div data-id="LandingTop"
+      <div data-id="TopFloorAttic"
 	   data-view="Number"
-	   data-title="Landing Top"
+	   data-title="Attic"
 	   style="background-color:#ff9618"></div>
     </li>
 
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-      <div data-id="WaterTank"
+      <div data-id="LandingTop"
 	   data-view="Number"
-	   data-title="Water Tank"
-	   style="background-color:#E4593F"></div>
+	   data-title="Landing Top"
+	   style="background-color:#96BF48"></div>
     </li>
 
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
@@ -78,24 +61,31 @@ $(function() {
     </li>
 
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="TopFloorAiringCabinet"
+	   data-view="Number"
+	   data-title="Airing Cabinet"
+	   style="background-color:#ff9618"></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="WaterTank"
+	   data-view="Number"
+	   data-title="Water Tank"
+	   style="background-color:#E4593F"></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
       <div data-id="LandingMiddle"
 	   data-view="Number"
 	   data-title="Landing Middle"
-	   style="background-color:#ff9618"></div>
+	   style="background-color:#96BF48"></div>
     </li>
 
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-      <div data-id="LandingBottom"
+      <div data-id="LivingRoomWindow"
 	   data-view="Number"
-	   data-title="Landing Bottom"
-	   style="background-color:#ff9618"></div>
-    </li>
-
-    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-      <div data-id="WaterBoiler"
-	   data-view="Number"
-	   data-title="Boiler"
-	   style="background-color:#E4593F"></div>
+	   data-title="Window"
+	   style="background-color:#AE668E"></div>
     </li>
 
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
@@ -113,17 +103,17 @@ $(function() {
     </li>
 
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-      <div data-id="TopFloorAttic"
+      <div data-id="WaterBoiler"
 	   data-view="Number"
-	   data-title="Attic"
-	   style="background-color:#ff9618"></div>
+	   data-title="Boiler"
+	   style="background-color:#E4593F"></div>
     </li>
 
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-      <div data-id="TopFloorAiringCabinet"
+      <div data-id="LandingBottom"
 	   data-view="Number"
-	   data-title="Airing Cabinet"
-	   style="background-color:#ff9618"></div>
+	   data-title="Landing Bottom"
+	   style="background-color:#96BF48"></div>
     </li>
 
   </ul>
