@@ -100,13 +100,14 @@ job_mapping.each do |title, dd|
     # create an instance of our Graphite class
     q = Graphite.new GRAPHITE_HOST, GRAPHITE_PORT
 
-    # get the current points and value. Timespan is static set at 1 hour.
+    # get the current points and value. Timespan is static set at 1
+    # hour.
     points, current = q.points "#{statname}", "-1hour"
 
     last_values[title] ||= current
 
-    # send to dashboard, supports for number (current, last), meter (value)
-    # and graph widgets (points)
+    # send to dashboard, supports for number (current, last), meter
+    # (value) and graph widgets (points)
     send_event("#{title}", { 
                  current: current.sigfig_to_s(3),
                  value: current,

@@ -1,22 +1,22 @@
 #!/bin/bash
 
-echo "setting up: mid-pi"
-echo "mid-pi" > /etc/hostname
+echo "setting up: master-pi"
+echo "master-pi" > /etc/hostname
 
 # make sure rpcbind is started at boot
 update-rc.d rpcbind enable
 
 echo "activating solar and temperature monitoring"
 # update-rc.d monitor_weather defaults 80
-update-rc.d monitor_temperature defaults 80
-# update-rc.d monitor_solar defaults 80
+# update-rc.d monitor_temperature defaults 80
+update-rc.d monitor_solar defaults 80
 sudo rename 's/S01/S90/' /etc/rc*.d/S*monito*
 
-# echo "activating carbon-cache daemon"
-# update-rc.d carbon-cache defaults 80
+echo "activating carbon-cache daemon"
+update-rc.d carbon-cache defaults 80
 
-# echo "activating dashing"
-# update-rc.d dashing defaults 80
+echo "activating dashing"
+update-rc.d dashing defaults 80
 
 # echo "setting up mirroring"
 # setup mirroring

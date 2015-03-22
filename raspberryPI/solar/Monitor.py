@@ -5,7 +5,7 @@ import time
 
 class Monitor:
 
-    CARBON_SERVER = '192.168.0.55'
+    CARBON_SERVER = '192.168.0.61'
     CARBON_PORT = 2003
 
     label = None
