@@ -1,0 +1,159 @@
+<% content_for :title do %>Temperature<% end %>
+
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+<script type='text/javascript'>
+ $(function() {
+   Dashing.gridsterLayout('[{"col":1,"row":1,"size_x":1,"size_y":1},{"col":2,"row":1,"size_x":1,"size_y":1},{"col":3,"row":1,"size_x":1,"size_y":1},{"col":3,"row":2,"size_x":1,"size_y":1},{"col":5,"row":1,"size_x":1,"size_y":1},{"col":1,"row":2,"size_x":1,"size_y":1},{"col":2,"row":2,"size_x":1,"size_y":1},{"col":3,"row":3,"size_x":1,"size_y":1},{"col":4,"row":1,"size_x":1,"size_y":1},{"col":5,"row":2,"size_x":1,"size_y":1},{"col":2,"row":3,"size_x":1,"size_y":1},{"col":4,"row":3,"size_x":1,"size_y":1},{"col":1,"row":3,"size_x":1,"size_y":1},{"col":4,"row":2,"size_x":1,"size_y":1},{"col":5,"row":3,"size_x":1,"size_y":1},{"col":6,"row":1,"size_x":3,"size_y":2},{"col":9,"row":1,"size_x":3,"size_y":2}]')
+ });
+ </script>
+
+<script type='text/javascript'>
+$(function() {
+  // These settings override the defaults set in application.coffee.
+  Dashing.numColumns = 20;
+  Dashing.widget_base_dimensions = [180, 240];
+});
+</script>
+
+<div class="gridster">
+  <ul>
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="TopFloorBackWall"
+	   data-view="Number"
+	   data-title="Niamh's bed"
+	   style="background-color:#00B0C6"></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="TopFloorBackFloor"
+	   data-view="Number"
+	   data-title="Keeva's bed"
+	   style="background-color:#00B0C6"></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="TopFloorFrontWall"
+	   data-view="Number"
+	   data-title="Fabian's bed"
+	   style="background-color:#00B0C6"></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="TopFloorAttic"
+	   data-view="Number"
+	   data-title="Attic"
+	   style="background-color:#ff9618"></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="LandingTop"
+	   data-view="Number"
+	   data-title="Landing Top"
+	   style="background-color:#96BF48"></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="LivingRoomCupBoard"
+	   data-view="Number"
+	   data-title="Living Room"
+	   style="background-color:#AE668E"></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="GroundFloorBackWindow"
+	   data-view="Number"
+	   data-title="Garden room"
+	   style="background-color:#AE668E"></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="TopFloorAiringCabinet"
+	   data-view="Number"
+	   data-title="Airing Cabinet"
+	   style="background-color:#ff9618"></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="WaterTank"
+	   data-view="Number"
+	   data-title="Water Tank"
+	   style="background-color:#E4593F"></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="LandingMiddle"
+	   data-view="Number"
+	   data-title="Landing Middle"
+	   style="background-color:#96BF48"></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="LivingRoomWindow"
+	   data-view="Number"
+	   data-title="Window"
+	   style="background-color:#AE668E"></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="HallwayTop"
+	   data-view="Number"
+	   data-title="Hallway Top"
+	   style="background-color:#ff9618"></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="HallwayBottom"
+	   data-view="Number"
+	   data-title="Hallway Bottom"
+	   style="background-color:#ff9618"></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="WaterBoiler"
+	   data-view="Number"
+	   data-title="Boiler"
+	   style="background-color:#E4593F"></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="LandingBottom"
+	   data-view="Number"
+	   data-title="Landing Bottom"
+	   style="background-color:#96BF48"></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="3" data-sizey="2";>
+      <div data-id="energy"
+      data-view="Rickshawgraph"
+      data-title="Energy"
+      data-color-scheme="default"
+      data-legend="true"
+      style="background-color:#47bbb3;">
+      </div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="3" data-sizey="2";>
+      <div data-id="solarpower"
+      data-view="Rickshawgraph"
+      data-title="Solar Power"
+      data-color-scheme="default"
+      data-legend="true"
+      style="background-color:#AE668E;">
+      </div>
+    </li>
+    <li data-row="3" data-col="6" data-sizex="1" data-sizey="1">
+      <div data-id="WattsonPowerGrid"
+	   data-view="Number"
+	   data-title="Energy Usage"
+	   style="background-color:#96BF48"></div>
+    </li>
+    <li data-row="3" data-col="7" data-sizex="1" data-sizey="1">
+      <div data-id="WattsonPowerSolar"
+	   data-view="Number"
+	   data-title="Solar Power" 
+	   style="background-color:#E4593F"></div>
+    </li>
+  </ul>
+
+</div>
