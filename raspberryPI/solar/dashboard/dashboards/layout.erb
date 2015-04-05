@@ -16,10 +16,11 @@
   <link rel="icon" href="/assets/favicon.ico">
 
 </head>
-  <body>
+
+<body>
     
-   <div id="container" data-switcher-interval="60000" data-switcher-dashboards="temperature_all energy">
-   <!-- <div id="container"> -->
+    <!- <div id="container" data-switcher-interval="60000" data-switcher-dashboards="temperature_all energy"> -->
+    <div id="container">
       <%= yield %>
     </div>
   
@@ -31,4 +32,5 @@
       <a href="#saving-instructions" id="save-gridster">Save this layout</a>
     <% end %>
   </body>
+
 </html>

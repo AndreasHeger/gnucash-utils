@@ -6,7 +6,7 @@ require 'date'
 # Heavily inspired from Thomas Van Machelen's "Bling dashboard article"
 
 # Set the graphite host and port (ip or hostname)
-GRAPHITE_HOST = '192.168.0.55'
+GRAPHITE_HOST = '192.168.0.61'
 GRAPHITE_PORT = '8080'
 INTERVAL = '30s'
 
@@ -54,7 +54,7 @@ class Graphite
 
     # Use Graphite api to query for the stats, parse the returned JSON and return the result
     def query(statname, since=nil)
-        since ||= '1h-ago'
+        since ||= '-1hour'
         http = Net::HTTP.new(@host, @port)
         response = http.request(Net::HTTP::Get.new("/render?format=json&target=#{statname}&from=#{since}"))
         result = JSON.parse(response.body, :symbolize_names => true)
