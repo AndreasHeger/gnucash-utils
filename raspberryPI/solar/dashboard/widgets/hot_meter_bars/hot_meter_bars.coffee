@@ -1,4 +1,4 @@
-class Dashing.MeterBars extends Dashing.Widget
+class Dashing.HotMeterBars extends Dashing.Widget
 
   @accessor 'title'
 
@@ -38,10 +38,9 @@ class Dashing.MeterBars extends Dashing.Widget
             rowsContainer.append(row)
           row.hide().fadeIn(1200)
 
-        elem = rowsContainer.find("."+normalizedItemName+" .inner-meter-bar")
+        elem = rowsContainer.find("."+normalizedItemName+" .inner-hot-meter-bar")
         if elem.length
-          @animateMeterBarContent(elem[0], parseFloat(elem[0].style.width),
-                                    parseFloat(item.value), 1000)
+          @animateMeterBarContent(elem[0], item, 1000)
         ++counter
 
       # Remove any nodes that were not in the new data, these will be the rows
@@ -56,7 +55,8 @@ class Dashing.MeterBars extends Dashing.Widget
       percentageOfTotalHeight = 100 / meter_items.length
       applyCorrectedRowHeight(rows, percentageOfTotalHeight)
 
-      applyZebraStriping(rows)
+      if @zebra
+        applyZebraStriping(rows)
 
 
   #***/
@@ -86,14 +86,16 @@ class Dashing.MeterBars extends Dashing.Widget
       .attr("title", item.name) )
 
     outerMeterBar = ( $("<div/>")
-      .attr("class", "outer-meter-bar") )
+      .attr("class", "outer-hot-meter-bar") )
 
     innerMeterBar = $("<div/>")
-      .attr("class", "inner-meter-bar")
-      .text("0%")
+      .attr("class", "inner-hot-meter-bar")
     innerMeterBar.css("width", "0%")
 
+    meterBarValue = $("<p/>").text("0%")
+
     # Put it all together.
+    innerMeterBar.append(meterBarValue)
     outerMeterBar.append(innerMeterBar)
     rowContent.append(projectName)
     rowContent.append(outerMeterBar)
@@ -107,11 +109,12 @@ class Dashing.MeterBars extends Dashing.Widget
   # interval to perform the animation.
   #
   # @element - element that is going to be animated.
-  # @from - the value that the element starts at.
-  # @to - the value that the element is going to.
+  # @meter_item - an item of the meter_items data received
   # @baseDuration - the minimum time the animation will perform.
   # /
-  animateMeterBarContent: (element, from, to, baseDuration) ->
+  animateMeterBarContent: (element, item, baseDuration) ->
+    from = parseFloat(element.style.width)
+    to = parseFloat(item.value)
     endpointDifference = (to-from)
 
     if endpointDifference != 0
@@ -125,15 +128,18 @@ class Dashing.MeterBars extends Dashing.Widget
 
       numberOfSteps = duration / stepInterval
       valueIncrement = endpointDifference / numberOfSteps
-      
+
+      meterBars = this
+
       interval = setInterval(
         ->
           currentValue += valueIncrement
           if Math.abs(currentValue - from) >= Math.abs(endpointDifference)
-            setMeterBarValue(element, to)
+            setHotMeterBarValue(element, to, item.warning, item.critical, item.localScope)
             clearInterval(interval)
           else
-            setMeterBarValue(element, currentValue)
+            setHotMeterBarValue(element, currentValue, item.warning, item.critical, item.localScope)
+          updateHotMeterBarStatus(meterBars)
         stepInterval)
 
       @addInterval(interval)
@@ -144,14 +150,56 @@ class Dashing.MeterBars extends Dashing.Widget
   #
   # @element - element to be set
   # @value - the numeric value to set the element to. This can be a float.
+  # @warningThreshold - the treshold at which display a warning visual alert
+  # @criticalThreshold - the treshold at which display a critical visual alert
+  # @localScope - whether this item can impact the global status of the widget
   # /
-  setMeterBarValue = (element, value) ->
-    if (value > 100) 
+  setHotMeterBarValue = (element, value, warningThreshold, criticalThreshold, localScope) ->
+    if (value > 100)
       value = 100
-    else if (value < 0) 
+    else if (value < 0)
       value = 0
     element.textContent = Math.floor(value) + "%"
     element.style.width = value + "%"
+
+    newStatus = switch
+      when criticalThreshold and value >= criticalThreshold then 'critical'
+      when warningThreshold and value >= warningThreshold then 'warning'
+      else 'ok'
+
+    for status in ['ok', 'critical', 'warning']
+      do (status) ->
+        match = (newStatus == status)
+        $(element).toggleClass("inner-hot-meter-bar-#{status}", match)
+        $(element).parent().toggleClass("outer-hot-meter-bar-#{status}", match)
+
+    $(element).toggleClass("global-alert", not localScope)
+
+  #***/
+  # Update the widget background accorrding to the meter items status
+  #
+  # @meterBars - DOM element corresponding to the widget
+  # /
+  updateHotMeterBarStatus = (meterBars) ->
+    meterBars_node = $(meterBars.node)
+    overallStatus = switch
+      when meterBars_node.find(".inner-hot-meter-bar-critical.global-alert").length then 'critical'
+      when meterBars_node.find(".inner-hot-meter-bar-warning.global-alert").length then 'warning'
+      else 'ok'
+
+    lastOverallStatus = meterBars.lastOverallStatus
+    if lastOverallStatus != overallStatus
+      meterBars.lastOverallStatus = overallStatus
+
+      for status in ['ok', 'critical', 'warning']
+        do (status) ->
+          meterBars_node.toggleClass("widget-hot-meter-bars-#{status}", overallStatus == status)
+
+      audiosound = meterBars[overallStatus + 'sound']
+      audioplayer = new Audio(audiosound) if audiosound?
+      if audioplayer
+        audioplayer.play()
+
 
   #***/
   # Applies a percentage-based row height to the list of rows passed in.

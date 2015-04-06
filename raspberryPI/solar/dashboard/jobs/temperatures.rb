@@ -13,32 +13,31 @@ INTERVAL = '30s'
 # Job mappings. Define a name and set the metrics name from graphite
 
 job_mapping = {
-    'TopFloorFrontWall' => ['Temperature.TopFloor.FrontWall', '30s'],
-    'TopFloorFrontCupBoard' => ['Temperature.TopFloor.FrontCupBoard', '30s'],
-    'TopFloorFrontFloor' => ['Temperature.TopFloor.FrontFloor', '30s'],
-    'TopFloorBackFloor' => ['Temperature.TopFloor.BackFloor', '30s'],
-    'TopFloorBackWall' => ['Temperature.TopFloor.BackWall', '30s'],
-    'TopFloorAiringCabinet' => ['Temperature.TopFloor.AiringCabinet', '30s'],
-    'TopFloorAttic' => ['Temperature.TopFloor.Attic', '30s'],
-    'GroundFloorBackDoor' => ['Temperature.GroundFloor.BackDoor', '30s'],
-    'GroundFloorBackWindow' => ['Temperature.GroundFloor.BackWindow', '30s'],
-    'HallwayTop' =>  ['Temperature.Hallway.Top', '30s'],
-    'HallwayBottom' => ['Temperature.Hallway.Bottom', '30s'],
-    'LivingRoomCupBoard' => ['Temperature.LivingRoom.CupBoard', '30s'],
-    'LivingRoomWindow' => ['Temperature.LivingRoom.Window', '30s'],
-    'LandingTop' => ['Temperature.Landing.Top', '30s'],
-    'LandingMiddle' => ['Temperature.Landing.Middle', '30s'],
-    'LandingBottom' => ['Temperature.Landing.Bottom', '30s'],
-    'WaterBoiler' => ['Temperature.Water.Boiler', '30s'],
-    'WaterTank' => ['Temperature.Water.Tank', '30s'],
+    'TopFloorFrontWall' => ['Temperature.TopFloor.FrontWall', 20, 25],
+    'TopFloorFrontCupBoard' => ['Temperature.TopFloor.FrontCupBoard', 20, 25],
+    'TopFloorFrontFloor' => ['Temperature.TopFloor.FrontFloor', 20, 25],
+    'TopFloorBackFloor' => ['Temperature.TopFloor.BackFloor', 20, 25],
+    'TopFloorBackWall' => ['Temperature.TopFloor.BackWall', 20, 25],
+    'TopFloorAiringCabinet' => ['Temperature.TopFloor.AiringCabinet', 20, 25],
+    'TopFloorAttic' => ['Temperature.TopFloor.Attic', 20, 25],
+    'GroundFloorBackDoor' => ['Temperature.GroundFloor.BackDoor', 20, 25],
+    'GroundFloorBackWindow' => ['Temperature.GroundFloor.BackWindow', 20, 25],
+    'HallwayTop' =>  ['Temperature.Hallway.Top', 20, 25],
+    'HallwayBottom' => ['Temperature.Hallway.Bottom', 20, 25],
+    'LivingRoomCupBoard' => ['Temperature.LivingRoom.CupBoard', 20, 25],
+    'LivingRoomWindow' => ['Temperature.LivingRoom.Window', 20, 25],
+    'LandingTop' => ['Temperature.Landing.Top', 20, 25],
+    'LandingMiddle' => ['Temperature.Landing.Middle', 20, 25],
+    'LandingBottom' => ['Temperature.Landing.Bottom', 20, 25],
+    'WaterBoiler' => ['Temperature.Water.Boiler', 20, 25],
+    'WaterTank' => ['Temperature.Water.Tank', 20, 25],
 }
 
 SCHEDULER.every '30s', :first_in => 0 do |job|
 
    progress_items = []
    job_mapping.each do |title, dd|
-      statname = dd[0]
-      interval = dd[1]
+      statname, critical, warning = dd
     
       # create an instance of our Graphite class
       q = Graphite.new GRAPHITE_HOST, GRAPHITE_PORT
@@ -47,7 +46,10 @@ SCHEDULER.every '30s', :first_in => 0 do |job|
       # hour.
       value = q.value "#{statname}", "-10min"
       progress_items << {"name" => title,
-                         "value" => value}
+                         "value" => value,
+      "localScope" => TRUE,
+      "critical" => critical,
+      "warting" => warning}
     end
 
     send_event("temperatures",
