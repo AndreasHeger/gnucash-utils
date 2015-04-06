@@ -159,7 +159,7 @@ class Dashing.HotMeterBars extends Dashing.Widget
       value = 100
     else if (value < 0)
       value = 0
-    element.textContent = Math.floor(value) + "%"
+    element.textContent = Math.floor(value)
     element.style.width = value + "%"
 
     newStatus = switch
