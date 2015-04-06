@@ -127,9 +127,12 @@ $(function() {
       <div data-id="energy"
       data-view="Rickshawgraph"
       data-title="Energy"
-      data-color-scheme="default"
+      data-color-scheme="rainbow"
       data-legend="true"
-      style="background-color:#47bbb3;">
+      data-unstack="true"
+      data-max=3000
+      data-default-alpha=0.5
+      style="background-color:#ccc;">
       </div>
     </li>
 
@@ -137,17 +140,22 @@ $(function() {
       <div data-id="solarpower"
       data-view="Rickshawgraph"
       data-title="Solar Power"
-      data-color-scheme="default"
+      data-color-scheme="rainbow"
       data-legend="true"
-      style="background-color:#AE668E;">
+      data-unstack="true"
+      data-max=4000
+      data-default-alpha=0.3
+      style="background-color:#ccc;">
       </div>
     </li>
+
     <li data-row="3" data-col="6" data-sizex="1" data-sizey="1">
       <div data-id="WattsonPowerGrid"
 	   data-view="Number"
 	   data-title="Energy Usage"
 	   style="background-color:#96BF48"></div>
     </li>
+
     <li data-row="3" data-col="7" data-sizex="1" data-sizey="1">
       <div data-id="WattsonPowerSolar"
 	   data-view="Number"
