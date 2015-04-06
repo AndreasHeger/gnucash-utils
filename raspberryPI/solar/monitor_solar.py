@@ -209,19 +209,26 @@ class App(Monitor):
                     continue
 
                 self.logger.debug('TCP: connected to inverter: %s:%s' %
-                             (str(addr), str(conn)))
+                                  (str(addr), str(conn)))
 
                 self.logger.debug("sent message 1")
                 conn.send(toMsg(TCP_MESSAGE_QUERY1))
                 data = conn.recv(1024)
+                self.logger.debug(
+                    "received response of length %i" % len(data))
 
                 self.logger.debug("sent message 2")
                 conn.send(toMsg(TCP_MESSAGE_QUERY2))
                 data = conn.recv(1024)
+                self.logger.debug(
+                    "received response of length %i" % len(data))
 
                 self.logger.debug("sent message 3")
                 conn.send(toMsg(TCP_MESSAGE_QUERY3))
                 data = conn.recv(1024)
+                self.logger.debug(
+                    "received response of length %i" % len(data))
+
                 break
 
         self.connection = conn
