@@ -83,7 +83,7 @@ class Graphite
     def value(name, since=nil)
         since ||= '-10min'
         stats = query name, since
-        last = (stats[:datapoints].select { |el| not el[0].nil? }).last[0].sigfig_to_s(2)
+        last = (stats[:datapoints].select { |el| not el[0].nil? }).last[0]
         return last
     end
 end

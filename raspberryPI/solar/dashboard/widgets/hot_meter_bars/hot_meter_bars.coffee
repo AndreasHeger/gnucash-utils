@@ -114,8 +114,12 @@ class Dashing.HotMeterBars extends Dashing.Widget
   # /
   animateMeterBarContent: (element, item, baseDuration) ->
     from = parseFloat(element.style.width)
-    to = parseFloat(item.value)
-    endpointDifference = (to-from)
+    value = parseFloat(item.value)
+    maxvalue = parseFloat(item.maxvalue)
+
+    # convert to to a percent value
+    to = 100.0 * value / maxvalue        
+    endpointDifference = (to - from)
 
     if endpointDifference != 0
       currentValue = from
@@ -135,10 +139,10 @@ class Dashing.HotMeterBars extends Dashing.Widget
         ->
           currentValue += valueIncrement
           if Math.abs(currentValue - from) >= Math.abs(endpointDifference)
-            setHotMeterBarValue(element, to, item.warning, item.critical, item.localScope)
+            setHotMeterBarValue(element, to, value, item.warning, item.critical, item.localScope)
             clearInterval(interval)
           else
-            setHotMeterBarValue(element, currentValue, item.warning, item.critical, item.localScope)
+            setHotMeterBarValue(element, currentValue, currentValue / 100.0 * maxvalue, item.warning, item.critical, item.localScope)
           updateHotMeterBarStatus(meterBars)
         stepInterval)
 
@@ -149,22 +153,23 @@ class Dashing.HotMeterBars extends Dashing.Widget
   # after making sure it is bounded between [0-100]
   #
   # @element - element to be set
-  # @value - the numeric value to set the element to. This can be a float.
+  # @value - the percentage numeric value to set the element to. This can be a float.
+  # @text - the text to display
   # @warningThreshold - the treshold at which display a warning visual alert
   # @criticalThreshold - the treshold at which display a critical visual alert
   # @localScope - whether this item can impact the global status of the widget
   # /
-  setHotMeterBarValue = (element, value, warningThreshold, criticalThreshold, localScope) ->
+  setHotMeterBarValue = (element, value, textvalue, warningThreshold, criticalThreshold, localScope) ->
     if (value > 100)
       value = 100
     else if (value < 0)
       value = 0
-    element.textContent = Math.floor(value)
+    element.textContent = textvalue.toPrecision(3)
     element.style.width = value + "%"
 
     newStatus = switch
-      when criticalThreshold and value >= criticalThreshold then 'critical'
-      when warningThreshold and value >= warningThreshold then 'warning'
+      when criticalThreshold and textvalue >= criticalThreshold then 'critical'
+      when warningThreshold and textvalue >= warningThreshold then 'warning'
       else 'ok'
 
     for status in ['ok', 'critical', 'warning']
