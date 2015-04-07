@@ -13,24 +13,25 @@ INTERVAL = '30s'
 # Job mappings. Define a name and set the metrics name from graphite
 
 job_mapping = [
-    ['TopFloorFrontWall', 'Temperature.TopFloor.FrontWall', 40, 20, 25],
-    ['TopFloorFrontCupBoard', 'Temperature.TopFloor.FrontCupBoard', 40, 20, 25],
-    ['TopFloorFrontFloor', 'Temperature.TopFloor.FrontFloor', 40, 20, 25],
-    ['TopFloorBackFloor', 'Temperature.TopFloor.BackFloor', 40, 20, 25],
-    ['TopFloorBackWall', 'Temperature.TopFloor.BackWall', 40, 20, 25],
-    ['TopFloorAiringCabinet', 'Temperature.TopFloor.AiringCabinet', 40, 20, 25],
-    ['TopFloorAttic', 'Temperature.TopFloor.Attic', 40, 20, 25],
-    ['GroundFloorBackDoor', 'Temperature.GroundFloor.BackDoor', 40, 20, 25],
-    ['GroundFloorBackWindow', 'Temperature.GroundFloor.BackWindow', 40, 20, 25],
-    ['HallwayTop', 'Temperature.Hallway.Top', 40, 20, 25],
-    ['HallwayBottom', 'Temperature.Hallway.Bottom', 40, 20, 25],
-    ['LivingRoomCupBoard', 'Temperature.LivingRoom.CupBoard', 40, 20, 25],
-    ['LivingRoomWindow', 'Temperature.LivingRoom.Window', 40, 20, 25],
-    ['LandingTop', 'Temperature.Landing.Top', 40, 20, 25],
-    ['LandingMiddle', 'Temperature.Landing.Middle', 40, 20, 25],
-    ['LandingBottom', 'Temperature.Landing.Bottom', 40, 20, 25],
-    ['WaterBoiler', 'Temperature.Water.Boiler', 60, 50, 55],
-    ['WaterTank', 'Temperature.Water.Tank', 60, 50, 55],
+    ['Fabian', 'Temperature.TopFloor.FrontWall', 40, 22, 25],
+    ['Niamh', 'Temperature.TopFloor.BackWall', 40, 22, 25],
+    ['Keeva', 'Temperature.TopFloor.BackFloor', 40, 22, 25],
+    ['Airing cabinet', 'Temperature.TopFloor.AiringCabinet', 50, 30, 40],
+    ['Attic', 'Temperature.TopFloor.Attic', 50, 40, 45],
+    ['Living room', 'Temperature.LivingRoom.Window', 40, 22, 25],
+    ['Garden room', 'Temperature.GroundFloor.BackWindow', 40, 22, 25],
+    ['TopFloorFrontCupBoard', 'Temperature.TopFloor.FrontCupBoard', 40, 22, 25],
+    ['TopFloorFrontFloor', 'Temperature.TopFloor.FrontFloor', 40, 22, 25],
+
+    ['GroundFloorBackDoor', 'Temperature.GroundFloor.BackDoor', 40, 22, 25],
+    ['HallwayTop', 'Temperature.Hallway.Top', 40, 22, 25],
+    ['HallwayBottom', 'Temperature.Hallway.Bottom', 40, 22, 25],
+    ['LivingRoomCupBoard', 'Temperature.LivingRoom.CupBoard', 40, 22, 25],
+    ['LandingTop', 'Temperature.Landing.Top', 40, 22, 25],
+    ['LandingMiddle', 'Temperature.Landing.Middle', 40, 22, 25],
+    ['LandingBottom', 'Temperature.Landing.Bottom', 40, 22, 25],
+    ['WaterBoiler', 'Temperature.Water.Boiler', 60, 45, 55],
+    ['WaterTank', 'Temperature.Water.Tank', 60, 45, 55],
 ]
 
 SCHEDULER.every '30s', :first_in => 0 do |job|

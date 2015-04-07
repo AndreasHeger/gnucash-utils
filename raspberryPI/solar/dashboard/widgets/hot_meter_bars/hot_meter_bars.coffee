@@ -15,12 +15,14 @@ class Dashing.HotMeterBars extends Dashing.Widget
     if meter_items.length == 0
       rowsContainer.empty()
     else
-      # Float value used to scale the rows to use the entire space of the widget
+      # Float value used to scale the rows to use the entire space of
+      # the widget
       rowHeight = 100 / meter_items.length
       counter = 0
       @clearIntervals()
 
-      # Add or move rows for each project. Checks first if the row already exists.
+      # Add or move rows for each project. Checks first if the row
+      # already exists.
       meter_items.forEach (item) =>
         normalizedItemName = item.name.replace(/\W+/g, "_")
         referenceRow = rowsContainer.children().eq(counter)
@@ -43,8 +45,8 @@ class Dashing.HotMeterBars extends Dashing.Widget
           @animateMeterBarContent(elem[0], item, 1000)
         ++counter
 
-      # Remove any nodes that were not in the new data, these will be the rows
-      # at the end of the widget.
+      # Remove any nodes that were not in the new data, these will be
+      # the rows at the end of the widget.
       currentNode = rowsContainer.children().eq(counter-1)
       while currentNode.next().length
         currentNode = currentNode.next()
@@ -90,9 +92,14 @@ class Dashing.HotMeterBars extends Dashing.Widget
 
     innerMeterBar = $("<div/>")
       .attr("class", "inner-hot-meter-bar")
-    innerMeterBar.css("width", "0%")
 
-    meterBarValue = $("<p/>").text("0%")
+    # set not to 0%, but to current value
+    # innerMeterBar.css("width", "0%")
+    # meterBarValue = $("<p/>").text("0%")
+
+    # start at 99% - forces updating
+    innerMeterBar.css("width", 99.0 * (item.value / item.maxvalue) + "%")
+    meterBarValue = $("<p/>").text(item.value.toPrecision(3))
 
     # Put it all together.
     innerMeterBar.append(meterBarValue)
