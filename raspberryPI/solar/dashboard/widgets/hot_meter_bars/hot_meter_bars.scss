@@ -26,6 +26,16 @@ $critical-color-dark: darken($critical-color, 10%);
 $critical-color-light: lighten($critical-color, 10%);
 $critical-color-lighter: lighten($critical-color, 25%);
 
+$minwarning-color: #A599B0;
+$minwarning-color-dark: darken($minwarning-color, 10%);
+$minwarning-color-light: lighten($minwarning-color, 10%);
+$minwarning-color-lighter: lighten($minwarning-color, 25%);
+$mincritical-color: #3811FF;
+$mincritical-color-dark: darken($mincritical-color, 10%);
+$mincritical-color-light: lighten($mincritical-color, 10%);
+$mincritical-color-lighter: lighten($mincritical-color, 25%);
+
+
 // $text-color:       $base-color-lightest;
 $text-color:          rgba(255, 255, 255, 0.7);
 
@@ -103,12 +113,20 @@ $text-color:          rgba(255, 255, 255, 0.7);
       background-color: $base-color-dark;
     }
 
-    .inner-hot-meter-bar-warning {
+    .inner-hot-meter-bar-max-warning {
       background-color: $warning-color-dark;
     }
 
-    .inner-hot-meter-bar-critical {
+    .inner-hot-meter-bar-max-critical {
       background-color: $critical-color-dark;
+    }
+
+    .inner-hot-meter-bar-min-warning {
+      background-color: $minwarning-color-dark;
+    }
+
+    .inner-hot-meter-bar-min-critical {
+      background-color: $mincritical-color-dark;
     }
   }
 
@@ -117,14 +135,24 @@ $text-color:          rgba(255, 255, 255, 0.7);
     border-color: $base-color-dark;
    } 
 
-  .outer-hot-meter-bar-warning {
+  .outer-hot-meter-bar-max-warning {
     background-color: $warning-color-lighter;
     border-color: $warning-color-dark;
    } 
 
-  .outer-hot-meter-bar-critical {
+  .outer-hot-meter-bar-max-critical {
     background-color: $critical-color-lighter;
     border-color: $critical-color-dark;
+   } 
+
+  .outer-hot-meter-bar-min-warning {
+    background-color: $minwarning-color-lighter;
+    border-color: $minwarning-color-dark;
+   } 
+
+  .outer-hot-meter-bar-min-critical {
+    background-color: $mincritical-color-lighter;
+    border-color: $mincritical-color-dark;
    } 
 
   .zebra-stripe {
@@ -141,7 +169,7 @@ $text-color:          rgba(255, 255, 255, 0.7);
   }
 }
   
-.widget.widget-hot-meter-bars-warning {
+.widget.widget-hot-meter-bars-maxwarning {
   background-color: $warning-color;
 
   .zebra-stripe {
@@ -149,11 +177,27 @@ $text-color:          rgba(255, 255, 255, 0.7);
   }
 }
   
-.widget.widget-hot-meter-bars-critical {
+.widget.widget-hot-meter-bars-maxcritical {
   background-color: $critical-color;
 
   .zebra-stripe {
     background-color: $critical-color-light;
+  }
+}
+
+.widget.widget-hot-meter-bars-minwarning {
+  background-color: $minwarning-color;
+
+  .zebra-stripe {
+    background-color: $minwarning-color-light;
+  }
+}
+  
+.widget.widget-hot-meter-bars-mincritical {
+  background-color: $mincritical-color;
+
+  .zebra-stripe {
+    background-color: $mincritical-color-light;
   }
 }
 

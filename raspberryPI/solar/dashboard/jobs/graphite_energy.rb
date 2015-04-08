@@ -2,14 +2,6 @@ require 'net/http'
 require 'json'
 require 'date'
 
-# Pull data from Graphite and make available to Dashing Widgets
-# Heavily inspired from Thomas Van Machelen's "Bling dashboard article"
-
-# Set the graphite host and port (ip or hostname)
-GRAPHITE_HOST = '192.168.0.61'
-GRAPHITE_PORT = '8080'
-INTERVAL = '30s'
-
 # Job mappings. Define a name and set the metrics name from graphite
 job_mapping = [
    {"name" => "energy",
@@ -26,7 +18,6 @@ job_mapping = [
                   'Solar.Power.Total']
                }
 ]
-
 
 job_mapping.each do |entry|
 

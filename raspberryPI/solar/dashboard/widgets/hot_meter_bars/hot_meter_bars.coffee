@@ -98,7 +98,7 @@ class Dashing.HotMeterBars extends Dashing.Widget
     # meterBarValue = $("<p/>").text("0%")
 
     # start at 99% - forces updating
-    innerMeterBar.css("width", 99.0 * (item.value / item.maxvalue) + "%")
+    innerMeterBar.css("width", 99.0 * (item.value - item.minvalue) / (item.maxvalue - item.minvalue) + "%")
     meterBarValue = $("<p/>").text(item.value.toPrecision(3))
 
     # Put it all together.
@@ -123,9 +123,10 @@ class Dashing.HotMeterBars extends Dashing.Widget
     from = parseFloat(element.style.width)
     value = parseFloat(item.value)
     maxvalue = parseFloat(item.maxvalue)
+    minvalue = parseFloat(item.minvalue)
 
     # convert to to a percent value
-    to = 100.0 * value / maxvalue        
+    to = 100.0 * (value - minvalue) / (maxvalue - minvalue)  
     endpointDifference = (to - from)
 
     if endpointDifference != 0
@@ -146,10 +147,17 @@ class Dashing.HotMeterBars extends Dashing.Widget
         ->
           currentValue += valueIncrement
           if Math.abs(currentValue - from) >= Math.abs(endpointDifference)
-            setHotMeterBarValue(element, to, value, item.warning, item.critical, item.localScope)
+            setHotMeterBarValue(element, to, value,
+                item.minwarning, item.mincritical,
+                item.maxwarning, item.maxcritical,
+                item.localScope)
             clearInterval(interval)
           else
-            setHotMeterBarValue(element, currentValue, currentValue / 100.0 * maxvalue, item.warning, item.critical, item.localScope)
+            setHotMeterBarValue(element, currentValue,
+                    currentValue / 100.0 * ( maxvalue - minvalue) + minvalue,
+                item.minwarning, item.mincritical,
+                item.maxwarning, item.maxcritical,
+                item.localScope)
           updateHotMeterBarStatus(meterBars)
         stepInterval)
 
@@ -166,7 +174,9 @@ class Dashing.HotMeterBars extends Dashing.Widget
   # @criticalThreshold - the treshold at which display a critical visual alert
   # @localScope - whether this item can impact the global status of the widget
   # /
-  setHotMeterBarValue = (element, value, textvalue, warningThreshold, criticalThreshold, localScope) ->
+  setHotMeterBarValue = (element, value, textvalue,
+          minWarningThreshold, minCriticalThreshold,
+          maxWarningThreshold, maxCriticalThreshold, localScope) ->
     if (value > 100)
       value = 100
     else if (value < 0)
@@ -174,12 +184,16 @@ class Dashing.HotMeterBars extends Dashing.Widget
     element.textContent = textvalue.toPrecision(3)
     element.style.width = value + "%"
 
+
     newStatus = switch
-      when criticalThreshold and textvalue >= criticalThreshold then 'critical'
-      when warningThreshold and textvalue >= warningThreshold then 'warning'
+      when maxCriticalThreshold and textvalue >= maxCriticalThreshold then 'max-critical'
+      when maxWarningThreshold and textvalue >= maxWarningThreshold then 'max-warning'
+      when minCriticalThreshold and textvalue <= minCriticalThreshold then 'min-critical'
+      when minWarningThreshold and textvalue <= minWarningThreshold then 'min-warning'
       else 'ok'
 
-    for status in ['ok', 'critical', 'warning']
+    for status in ['ok', 'max-critical', 'max-warning',
+                     'min-critical', 'min-warning']
       do (status) ->
         match = (newStatus == status)
         $(element).toggleClass("inner-hot-meter-bar-#{status}", match)
@@ -203,7 +217,8 @@ class Dashing.HotMeterBars extends Dashing.Widget
     if lastOverallStatus != overallStatus
       meterBars.lastOverallStatus = overallStatus
 
-      for status in ['ok', 'critical', 'warning']
+      for status in ['ok', 'max-critical', 'max-warning',
+            'min-warning', 'min-critical']
         do (status) ->
           meterBars_node.toggleClass("widget-hot-meter-bars-#{status}", overallStatus == status)
 
