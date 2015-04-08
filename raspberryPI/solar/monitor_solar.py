@@ -240,17 +240,21 @@ class App(Monitor):
         tcp = self.tcp
 
         while True:
+            restart = False
             try:
                 logger.debug("getting data")
                 conn.send(toMsg(TCP_MESSAGE_QUERY_DATA))
                 data = conn.recv(1024)
-            except OSError:
-                break
+            except (OSError, socket.error):
+                logger.warn("error while retrieving data")
+                restart = True
 
             if len(data) == 0:
-                self.logger.warn(
-                    "received 0 bytes - closing connection "
-                    "and restarting")
+                self.logger.warn("received 0 bytes when retrieving data")
+                restart = True
+
+            if restart:
+                self.logger.warn("closing connection and restarting")
                 conn.close()
                 tcp.close()
                 self.setup()
