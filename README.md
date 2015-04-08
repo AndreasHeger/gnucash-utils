@@ -1,24 +1,9 @@
-Projects
-========
+Gnucash reports
+===============
 
-Various small projects. These are not polished but might prove
-useful to others. 
-
-Use at your own risk.
-
-gnucash
--------
-
-Gnucash reports. Use scripts in-situ. Needs the
-gnucash python bindings installed. Type::
-   
-   python -c "import gnucash"
-
-to see if you got them.
-
-raspberryPI
-------------
-
-Various raspberry PI projects.
+gnucash_expenses_with_liability_report.py 
+    Build an expense report that includes liabilities.
+    In home budgeting, this script is useful to get an 
+    overview over the monthly outgoings.
 
 

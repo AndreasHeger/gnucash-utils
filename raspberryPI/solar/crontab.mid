@@ -1,5 +1,0 @@
-# use /bin/bash to run commands, instead of the default /bin/sh
-SHELL=/bin/bash
-# run five minutes after midnight, every day
-5 0 * * *       (cd /home/pi/mirror; ./mirror.sh > mirroring.log 2>&1)
-
